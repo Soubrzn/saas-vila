@@ -1,0 +1,44 @@
+import { createCustomerAction } from "@/actions/customers";
+import { StatusMessage } from "@/components/common/status-message";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+
+type CustomerFormProps = {
+  error?: string;
+};
+
+export function CustomerForm({ error }: CustomerFormProps) {
+  return (
+    <Card className="rounded-lg">
+      <CardHeader>
+        <CardTitle>Novo cliente</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form action={createCustomerAction} className="space-y-4">
+          <StatusMessage error={error} />
+          <div className="space-y-2">
+            <Label htmlFor="name">Nome</Label>
+            <Input id="name" name="name" placeholder="Maria Silva" required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="phone">Telefone</Label>
+            <Input id="phone" name="phone" placeholder="(65) 99999-9999" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="notes">Observacoes</Label>
+            <Textarea id="notes" name="notes" />
+          </div>
+          <Button type="submit">Cadastrar cliente</Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
