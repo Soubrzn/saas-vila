@@ -66,6 +66,7 @@ const paymentOptions = [
 
 const shortcuts = [
   { key: "F2", label: "Produto" },
+  { key: "Enter", label: "Lancar item" },
   { key: "F3", label: "Preco" },
   { key: "F4", label: "Canc. item" },
   { key: "F6", label: "Canc. tudo" },
@@ -247,6 +248,11 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "F5") {
+        event.preventDefault();
+        searchRef.current?.focus();
+      }
+
       if (event.key === "F2") {
         event.preventDefault();
         setPriceMode(false);
@@ -515,7 +521,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                             {formatCurrency(product.sale_price)}
                           </span>
                           <span className="rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-600">
-                            {available <= 0 ? "sem saldo" : "selecionar"}
+                            {available <= 0 ? "sem saldo" : "Enter"}
                           </span>
                         </div>
                       </div>
