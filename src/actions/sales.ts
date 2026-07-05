@@ -44,14 +44,24 @@ export async function registerSaleAction(formData: FormData) {
     );
   }
 
-  const { data, error } = await supabase.rpc("register_sale", {
+  const salePayload = {
     p_customer_id: customerId,
     p_payment_type: paymentType,
     p_discount_total: discountTotal,
     p_notes: notes || null,
     p_items: items,
+  };
+
+  let { data, error } = await supabase.rpc("register_sale", {
+    ...salePayload,
     p_idempotency_key: saleRequestId || null,
   });
+
+  if (error && error.code === "PGRST202") {
+    const fallbackResponse = await supabase.rpc("register_sale", salePayload);
+    data = fallbackResponse.data;
+    error = fallbackResponse.error;
+  }
 
   if (error) {
     redirect(
