@@ -1,8 +1,9 @@
-import { ReceiptText } from "lucide-react";
+import { Plus, ReceiptText } from "lucide-react";
 import Link from "next/link";
 
 import { EmptyState } from "@/components/common/empty-state";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -53,6 +54,7 @@ export function SalesTable({ sales }: SalesTableProps) {
             <TableHead>Pagamento</TableHead>
             <TableHead>Total</TableHead>
             <TableHead>Data</TableHead>
+            <TableHead className="text-right">Abrir</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -77,6 +79,19 @@ export function SalesTable({ sales }: SalesTableProps) {
                   dateStyle: "short",
                   timeStyle: "short",
                 }).format(new Date(sale.sold_at))}
+              </TableCell>
+              <TableCell className="text-right">
+                <Link
+                  href={`/vendas/${sale.id}`}
+                  aria-label={`Abrir venda ${sale.id.slice(0, 8)}`}
+                  title="Abrir venda"
+                  className={buttonVariants({
+                    variant: "outline",
+                    size: "icon-sm",
+                  })}
+                >
+                  <Plus />
+                </Link>
               </TableCell>
             </TableRow>
           ))}
