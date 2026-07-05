@@ -86,6 +86,14 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const cartLengthRef = useRef(0);
+  const submittingRef = useRef(false);
+  const [saleRequestId] = useState(() => {
+    if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+      return crypto.randomUUID();
+    }
+
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  });
   const [query, setQuery] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [paymentType, setPaymentType] = useState("cash");
@@ -93,6 +101,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
   const [discount, setDiscount] = useState("0");
   const [quantityToAdd, setQuantityToAdd] = useState("1");
   const [priceMode, setPriceMode] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   const productsById = useMemo(() => {
@@ -153,7 +162,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
     const product = productsById.get(productId);
     const parsedQuantity = Math.max(1, Number(requestedQuantity) || 1);
 
-    if (!product || product.current_stock <= 0) {
+    if (submittingRef.current || !product || product.current_stock <= 0) {
       return;
     }
 
@@ -183,6 +192,10 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
   }
 
   function decreaseProduct(productId: string) {
+    if (submittingRef.current) {
+      return;
+    }
+
     setSelectedProductId(productId);
     setCart((current) =>
       current
@@ -196,6 +209,10 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
   }
 
   function removeProduct(productId: string) {
+    if (submittingRef.current) {
+      return;
+    }
+
     setCart((current) =>
       current.filter((item) => item.productId !== productId),
     );
@@ -210,6 +227,10 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
   }
 
   function clearSale() {
+    if (submittingRef.current) {
+      return;
+    }
+
     setCart([]);
     setCustomerId("");
     setDiscount("0");
@@ -240,11 +261,16 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
 
       if (event.key === "F4") {
         event.preventDefault();
-        setCart((current) => current.slice(0, -1));
+        if (!submittingRef.current) {
+          setCart((current) => current.slice(0, -1));
+        }
       }
 
       if (event.key === "F6") {
         event.preventDefault();
+        if (submittingRef.current) {
+          return;
+        }
         setCart([]);
         setCustomerId("");
         setDiscount("0");
@@ -267,7 +293,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
 
       if (event.key === "F9") {
         event.preventDefault();
-        if (cartLengthRef.current > 0) {
+        if (cartLengthRef.current > 0 && !submittingRef.current) {
           formRef.current?.requestSubmit();
         }
       }
@@ -296,8 +322,23 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
     <form
       ref={formRef}
       action={registerSaleAction}
+      onSubmit={(event) => {
+        if (submittingRef.current) {
+          event.preventDefault();
+          return;
+        }
+
+        if (cartRows.length === 0) {
+          event.preventDefault();
+          return;
+        }
+
+        submittingRef.current = true;
+        setIsSubmitting(true);
+      }}
       className="overflow-hidden rounded-lg border bg-background shadow-sm"
     >
+      <input type="hidden" name="sale_request_id" value={saleRequestId} />
       <input type="hidden" name="items" value={itemsPayload} />
       <input type="hidden" name="payment_type" value={paymentType} />
       <input type="hidden" name="customer_id" value={customerId} />
@@ -347,7 +388,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                         onKeyDown={(event) => {
                           if (event.key === "Enter") {
                             event.preventDefault();
-                            if (selectedProduct && !priceMode) {
+                            if (selectedProduct && !priceMode && !isSubmitting) {
                               addProduct(selectedProduct.id);
                             }
                           }
@@ -400,7 +441,11 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                     <Button
                       type="button"
                       className="w-full"
-                      disabled={selectedProduct.current_stock <= 0 || priceMode}
+                      disabled={
+                        isSubmitting ||
+                        selectedProduct.current_stock <= 0 ||
+                        priceMode
+                      }
                       onClick={() => addProduct(selectedProduct.id)}
                     >
                       <Plus data-icon="inline-start" />
@@ -435,9 +480,6 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                       type="button"
                       onClick={() => {
                         setSelectedProductId(product.id);
-                        if (!priceMode) {
-                          addProduct(product.id);
-                        }
                       }}
                       className={cn(
                         "min-h-28 rounded-lg border bg-background p-3 text-left transition-colors hover:bg-muted/50",
@@ -466,7 +508,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                             {formatCurrency(product.sale_price)}
                           </span>
                           <span className="rounded-md bg-muted px-2 py-1 text-xs">
-                            {available <= 0 ? "sem saldo" : "Enter"}
+                            {available <= 0 ? "sem saldo" : "selecionar"}
                           </span>
                         </div>
                       </div>
@@ -513,6 +555,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                         variant="ghost"
                         size="icon-sm"
                         onClick={() => removeProduct(item.product.id)}
+                        disabled={isSubmitting}
                         aria-label="Cancelar item"
                       >
                         <Trash2 />
@@ -525,6 +568,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                           variant="outline"
                           size="icon-sm"
                           onClick={() => decreaseProduct(item.product.id)}
+                          disabled={isSubmitting}
                           aria-label="Diminuir quantidade"
                         >
                           <Minus />
@@ -538,7 +582,10 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                           size="icon-sm"
                           onClick={() => addProduct(item.product.id, "1")}
                           aria-label="Aumentar quantidade"
-                          disabled={item.quantity >= item.product.current_stock}
+                          disabled={
+                            isSubmitting ||
+                            item.quantity >= item.product.current_stock
+                          }
                         >
                           <Plus />
                         </Button>
@@ -576,6 +623,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                         type="button"
                         variant={active ? "default" : "outline"}
                         onClick={() => setPaymentType(option.value)}
+                        disabled={isSubmitting}
                         className={cn("justify-start", active && "shadow-sm")}
                       >
                         <Icon data-icon="inline-start" />
@@ -592,6 +640,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                       id="customer-select"
                       value={customerId}
                       onChange={(event) => setCustomerId(event.target.value)}
+                      disabled={isSubmitting}
                       required
                       className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
                     >
@@ -617,11 +666,17 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                     step="0.01"
                     value={discount}
                     onChange={(event) => setDiscount(event.target.value)}
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="notes">Observacoes</Label>
-                  <Textarea id="notes" name="notes" className="min-h-10" />
+                  <Textarea
+                    id="notes"
+                    name="notes"
+                    className="min-h-10"
+                    disabled={isSubmitting}
+                  />
                 </div>
               </div>
 
@@ -647,7 +702,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                   type="button"
                   variant="outline"
                   onClick={cancelLastItem}
-                  disabled={cartRows.length === 0}
+                  disabled={isSubmitting || cartRows.length === 0}
                 >
                   <XCircle data-icon="inline-start" />
                   Canc. item
@@ -656,7 +711,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                   type="button"
                   variant="outline"
                   onClick={clearSale}
-                  disabled={cartRows.length === 0}
+                  disabled={isSubmitting || cartRows.length === 0}
                 >
                   <Trash2 data-icon="inline-start" />
                   Canc. tudo
@@ -665,16 +720,17 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                   type="button"
                   variant="outline"
                   onClick={() => router.push("/dashboard")}
+                  disabled={isSubmitting}
                 >
                   <LogOut data-icon="inline-start" />
                   Sair
                 </Button>
                 <Button
                   type="submit"
-                  disabled={cartRows.length === 0}
+                  disabled={isSubmitting || cartRows.length === 0}
                   className="bg-emerald-600 hover:bg-emerald-700"
                 >
-                  Finalizar
+                  {isSubmitting ? "Finalizando..." : "Finalizar"}
                 </Button>
               </div>
             </div>

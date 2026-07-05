@@ -13,6 +13,7 @@ export async function registerSaleAction(formData: FormData) {
   const notes = formString(formData, "notes");
   const discountTotal = formNumber(formData, "discount_total");
   const itemsValue = formString(formData, "items");
+  const saleRequestId = formString(formData, "sale_request_id");
   const productId = formString(formData, "product_id");
   const quantity = formNumber(formData, "quantity");
 
@@ -49,6 +50,7 @@ export async function registerSaleAction(formData: FormData) {
     p_discount_total: discountTotal,
     p_notes: notes || null,
     p_items: items,
+    p_idempotency_key: saleRequestId || null,
   });
 
   if (error) {

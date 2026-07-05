@@ -54,6 +54,7 @@ create table public.sales (
   discount_total numeric(12,2) not null default 0 check (discount_total >= 0),
   total numeric(12,2) not null default 0 check (total >= 0),
   notes text,
+  idempotency_key text,
   sold_at timestamptz not null default now(),
   created_at timestamptz not null default now(),
   unique (shop_id, id),
@@ -121,6 +122,8 @@ create index products_shop_id_idx on public.products(shop_id);
 create index products_low_stock_idx on public.products(shop_id, active, current_stock, minimum_stock);
 create index customers_shop_id_idx on public.customers(shop_id);
 create index sales_shop_sold_at_idx on public.sales(shop_id, sold_at desc);
+create unique index sales_shop_idempotency_key_idx on public.sales(shop_id, idempotency_key)
+where idempotency_key is not null;
 create index sale_items_shop_sale_idx on public.sale_items(shop_id, sale_id);
 create index debts_shop_status_idx on public.customer_debts(shop_id, status, created_at);
 create index stock_movements_shop_product_idx on public.stock_movements(shop_id, product_id, created_at desc);
