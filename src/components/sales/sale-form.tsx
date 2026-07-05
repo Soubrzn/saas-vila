@@ -55,6 +55,7 @@ type SaleFormProps = {
   products: SaleProductOption[];
   customers: SaleCustomerOption[];
   error?: string;
+  fullscreen?: boolean;
 };
 
 const paymentOptions = [
@@ -82,7 +83,12 @@ function normalizeText(value: string) {
   return value.trim().toLowerCase();
 }
 
-export function SaleForm({ products, customers, error }: SaleFormProps) {
+export function SaleForm({
+  products,
+  customers,
+  error,
+  fullscreen = false,
+}: SaleFormProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -342,20 +348,28 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
         submittingRef.current = true;
         setIsSubmitting(true);
       }}
-      className="overflow-hidden rounded-3xl border border-white/70 bg-white/80 shadow-[0_30px_90px_-48px_rgba(15,23,42,0.95)] backdrop-blur-xl"
+      className={cn(
+        "overflow-hidden border border-white/70 bg-white/80 shadow-[0_30px_90px_-48px_rgba(15,23,42,0.95)] backdrop-blur-xl",
+        fullscreen ? "h-dvh rounded-none border-0 shadow-none" : "rounded-3xl",
+      )}
     >
       <input type="hidden" name="sale_request_id" value={saleRequestId} />
       <input type="hidden" name="items" value={itemsPayload} />
       <input type="hidden" name="payment_type" value={paymentType} />
       <input type="hidden" name="customer_id" value={customerId} />
 
-      <div className="grid min-h-[calc(100dvh-9rem)] lg:grid-cols-[minmax(0,1fr)_430px]">
-        <section className="flex min-w-0 flex-col border-r border-slate-200/70 bg-white/45">
+      <div
+        className={cn(
+          "grid lg:grid-cols-[minmax(0,1fr)_430px]",
+          fullscreen ? "h-full min-h-0" : "min-h-[calc(100dvh-9rem)]",
+        )}
+      >
+        <section className="flex min-h-0 min-w-0 flex-col border-r border-slate-200/70 bg-white/45">
           <div className="bg-slate-950 px-4 py-3 text-white">
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
               <div className="inline-flex items-center gap-2 font-semibold">
                 <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.9)]" />
-                SaaS Vila PDV
+                PDV
               </div>
               <div className="flex flex-wrap gap-2 text-white/85">
                 {shortcuts.map((shortcut) => (
@@ -380,8 +394,13 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
             </div>
           </div>
 
-          <div className="grid gap-4 p-4 xl:grid-cols-[320px_1fr]">
-            <div className="space-y-4">
+          <div
+            className={cn(
+              "grid gap-4 p-4 xl:grid-cols-[320px_1fr]",
+              fullscreen && "min-h-0 flex-1 overflow-hidden",
+            )}
+          >
+            <div className={cn("space-y-4", fullscreen && "min-h-0 overflow-y-auto pr-1")}>
               <div className="rounded-2xl border border-white/70 bg-white/85 p-4 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.8)] backdrop-blur-xl">
                 <div className="mb-3 flex items-center gap-2 text-sm font-medium">
                   <PackageSearch className="size-4" />
@@ -479,7 +498,12 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
               </div>
             </div>
 
-            <div className="min-w-0 space-y-4">
+            <div
+              className={cn(
+                "min-w-0 space-y-4",
+                fullscreen && "min-h-0 overflow-y-auto pr-1",
+              )}
+            >
               <StatusMessage error={error} />
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {filteredProducts.map((product) => {
@@ -533,7 +557,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
           </div>
         </section>
 
-        <aside className="flex min-h-full flex-col bg-white/90 backdrop-blur-xl">
+        <aside className="flex min-h-0 flex-col bg-white/90 backdrop-blur-xl">
           <div className="border-b border-white/10 bg-slate-950 px-4 py-3 text-white">
             <div className="flex items-center gap-2">
               <ReceiptText className="size-5" />
@@ -541,7 +565,12 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
             </div>
           </div>
 
-          <div className="flex min-h-0 flex-1 flex-col p-4">
+          <div
+            className={cn(
+              "flex min-h-0 flex-1 flex-col p-4",
+              fullscreen && "overflow-y-auto",
+            )}
+          >
             <div className="min-h-64 flex-1 space-y-2 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/80 p-2">
               {cartRows.length === 0 ? (
                 <div className="flex h-full min-h-56 flex-col items-center justify-center text-center text-sm text-muted-foreground">

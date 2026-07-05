@@ -38,7 +38,7 @@ export default async function SalesPage() {
               className={buttonVariants({ variant: "outline", size: "sm" })}
             >
               <ExternalLink data-icon="inline-start" />
-              PDV externo
+              PDV
             </Link>
             <Link
               href="/vendas/nova"
