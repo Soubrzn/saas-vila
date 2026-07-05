@@ -24,7 +24,6 @@ export default async function NewSalePage({ searchParams }: NewSalePageProps) {
       .select("id, name, sale_price, current_stock")
       .eq("shop_id", shop.id)
       .eq("active", true)
-      .gt("current_stock", 0)
       .order("name"),
     supabase
       .from("customers")
@@ -37,7 +36,7 @@ export default async function NewSalePage({ searchParams }: NewSalePageProps) {
     <>
       <PageHeader
         title="PDV"
-        description="Venda de balcão com carrinho e baixa automatica de estoque."
+        description="Venda de balcao com carrinho, atalhos e baixa automatica de estoque."
       />
       <div className="p-4 sm:p-6">
         {(productsResponse.data ?? []).length === 0 ? (
@@ -45,7 +44,7 @@ export default async function NewSalePage({ searchParams }: NewSalePageProps) {
             <EmptyState
               icon={PackagePlus}
               title="Cadastre produtos antes da venda"
-              description="A venda baixa estoque automaticamente, entao precisa de ao menos um produto com estoque."
+              description="Cadastre os produtos e use Estoque para lancar compras ou ajustes de entrada."
             />
             <Link href="/produtos/novo" className={buttonVariants()}>
               Cadastrar produto
