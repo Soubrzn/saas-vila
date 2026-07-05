@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -16,16 +17,25 @@ type ProductFormProps = {
 
 export function ProductForm({ error }: ProductFormProps) {
   return (
-    <Card className="rounded-lg">
+    <Card className="border-white/70 bg-white/80 shadow-[0_24px_70px_-42px_rgba(15,23,42,0.9)]">
       <CardHeader>
         <CardTitle>Novo produto</CardTitle>
+        <CardDescription>
+          Cadastre o item uma vez e controle o saldo pela aba Estoque.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={createProductAction} className="space-y-4">
           <StatusMessage error={error} />
           <div className="space-y-2">
             <Label htmlFor="name">Nome</Label>
-            <Input id="name" name="name" placeholder="Arroz 5kg" required />
+            <Input
+              id="name"
+              name="name"
+              placeholder="Arroz 5kg"
+              required
+              className="h-10 bg-white/70"
+            />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
@@ -37,6 +47,7 @@ export function ProductForm({ error }: ProductFormProps) {
                 step="0.01"
                 min="0"
                 required
+                className="h-10 bg-white/70"
               />
             </div>
             <div className="space-y-2">
@@ -48,6 +59,7 @@ export function ProductForm({ error }: ProductFormProps) {
                 step="0.01"
                 min="0"
                 required
+                className="h-10 bg-white/70"
               />
             </div>
           </div>
@@ -60,10 +72,13 @@ export function ProductForm({ error }: ProductFormProps) {
                 type="number"
                 min="0"
                 required
+                className="h-10 bg-white/70"
               />
             </div>
           </div>
-          <Button type="submit">Cadastrar produto</Button>
+          <Button type="submit" className="h-10 w-full sm:w-auto">
+            Cadastrar produto
+          </Button>
         </form>
       </CardContent>
     </Card>

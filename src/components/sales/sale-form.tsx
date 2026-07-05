@@ -336,7 +336,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
         submittingRef.current = true;
         setIsSubmitting(true);
       }}
-      className="overflow-hidden rounded-lg border bg-background shadow-sm"
+      className="overflow-hidden rounded-3xl border border-white/70 bg-white/80 shadow-[0_30px_90px_-48px_rgba(15,23,42,0.95)] backdrop-blur-xl"
     >
       <input type="hidden" name="sale_request_id" value={saleRequestId} />
       <input type="hidden" name="items" value={itemsPayload} />
@@ -344,14 +344,20 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
       <input type="hidden" name="customer_id" value={customerId} />
 
       <div className="grid min-h-[calc(100dvh-9rem)] lg:grid-cols-[minmax(0,1fr)_430px]">
-        <section className="flex min-w-0 flex-col border-r bg-muted/20">
-          <div className="bg-red-700 px-4 py-3 text-white">
+        <section className="flex min-w-0 flex-col border-r border-slate-200/70 bg-white/45">
+          <div className="bg-slate-950 px-4 py-3 text-white">
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
-              <div className="font-semibold">SaaS Vila PDV</div>
-              <div className="flex flex-wrap gap-3 text-white/85">
+              <div className="inline-flex items-center gap-2 font-semibold">
+                <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.9)]" />
+                SaaS Vila PDV
+              </div>
+              <div className="flex flex-wrap gap-2 text-white/85">
                 {shortcuts.map((shortcut) => (
-                  <span key={shortcut.key}>
-                    <strong className="text-white">{shortcut.key}</strong>{" "}
+                  <span
+                    key={shortcut.key}
+                    className="rounded-full border border-white/10 bg-white/10 px-2.5 py-1"
+                  >
+                    <strong className="text-emerald-200">{shortcut.key}</strong>{" "}
                     {shortcut.label}
                   </span>
                 ))}
@@ -359,7 +365,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
             </div>
           </div>
 
-          <div className="bg-blue-800 px-4 py-4 text-white">
+          <div className="bg-[linear-gradient(135deg,#0f766e,#0891b2_55%,#7c3aed)] px-4 py-5 text-white">
             <div className="truncate text-3xl font-semibold tracking-normal sm:text-4xl">
               {selectedProduct ? selectedProduct.name : "CAIXA LIVRE"}
             </div>
@@ -370,7 +376,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
 
           <div className="grid gap-4 p-4 xl:grid-cols-[320px_1fr]">
             <div className="space-y-4">
-              <div className="rounded-lg border bg-background p-4">
+              <div className="rounded-2xl border border-white/70 bg-white/85 p-4 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.8)] backdrop-blur-xl">
                 <div className="mb-3 flex items-center gap-2 text-sm font-medium">
                   <PackageSearch className="size-4" />
                   Buscar produto
@@ -378,7 +384,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                 <div className="space-y-3">
                   <div className="space-y-2">
                     <Label htmlFor="product-search">Codigo ou descricao</Label>
-                    <div className="flex items-center gap-2 rounded-lg border px-2.5">
+                    <div className="flex items-center gap-2 rounded-xl border bg-white/80 px-3">
                       <Search className="size-4 text-muted-foreground" />
                       <input
                         id="product-search"
@@ -406,12 +412,13 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                       min="1"
                       value={quantityToAdd}
                       onChange={(event) => setQuantityToAdd(event.target.value)}
+                      className="h-10 bg-white/80"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-lg border bg-background p-4">
+              <div className="rounded-2xl border border-white/70 bg-white/85 p-4 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.8)] backdrop-blur-xl">
                 <div className="mb-3 flex items-center gap-2 text-sm font-medium">
                   <DollarSign className="size-4" />
                   Consulta de preco
@@ -425,13 +432,13 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                       </p>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
-                      <div className="rounded-lg bg-muted p-3">
+                      <div className="rounded-xl bg-emerald-50 p-3 ring-1 ring-emerald-100">
                         <p className="text-xs text-muted-foreground">Preco</p>
-                        <p className="text-xl font-semibold">
+                        <p className="text-xl font-semibold text-emerald-800">
                           {formatCurrency(selectedProduct.sale_price)}
                         </p>
                       </div>
-                      <div className="rounded-lg bg-muted p-3">
+                      <div className="rounded-xl bg-slate-100 p-3 ring-1 ring-slate-200">
                         <p className="text-xs text-muted-foreground">Estoque</p>
                         <p className="text-xl font-semibold">
                           {selectedProduct.current_stock}
@@ -482,8 +489,8 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                         setSelectedProductId(product.id);
                       }}
                       className={cn(
-                        "min-h-28 rounded-lg border bg-background p-3 text-left transition-colors hover:bg-muted/50",
-                        isSelected && "border-blue-700 ring-2 ring-blue-700/20",
+                        "min-h-28 rounded-2xl border border-white/70 bg-white/85 p-3 text-left shadow-[0_14px_36px_-34px_rgba(15,23,42,0.8)] transition-all hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-white",
+                        isSelected && "border-emerald-500 ring-2 ring-emerald-500/20",
                         available <= 0 && "opacity-60",
                       )}
                     >
@@ -507,7 +514,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                           <span className="text-lg font-semibold">
                             {formatCurrency(product.sale_price)}
                           </span>
-                          <span className="rounded-md bg-muted px-2 py-1 text-xs">
+                          <span className="rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-600">
                             {available <= 0 ? "sem saldo" : "selecionar"}
                           </span>
                         </div>
@@ -520,8 +527,8 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
           </div>
         </section>
 
-        <aside className="flex min-h-full flex-col bg-background">
-          <div className="border-b bg-blue-800 px-4 py-3 text-white">
+        <aside className="flex min-h-full flex-col bg-white/90 backdrop-blur-xl">
+          <div className="border-b border-white/10 bg-slate-950 px-4 py-3 text-white">
             <div className="flex items-center gap-2">
               <ReceiptText className="size-5" />
               <h2 className="text-xl font-semibold">Cupom</h2>
@@ -529,7 +536,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
           </div>
 
           <div className="flex min-h-0 flex-1 flex-col p-4">
-            <div className="min-h-64 flex-1 space-y-2 overflow-y-auto rounded-lg border bg-white p-2">
+            <div className="min-h-64 flex-1 space-y-2 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/80 p-2">
               {cartRows.length === 0 ? (
                 <div className="flex h-full min-h-56 flex-col items-center justify-center text-center text-sm text-muted-foreground">
                   <ShoppingCart className="mb-2 size-8" />
@@ -539,7 +546,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                 cartRows.map((item, index) => (
                   <div
                     key={item.product.id}
-                    className="rounded-md border bg-background p-2"
+                    className="rounded-xl border border-white/80 bg-white p-3 shadow-sm"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
@@ -605,7 +612,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
             </div>
 
             <div className="mt-4 space-y-4">
-              <div className="rounded-lg border p-3">
+              <div className="rounded-2xl border border-slate-200 bg-white/75 p-3 shadow-sm">
                 <div className="mb-2 flex items-center justify-between">
                   <Label>Forma de pagamento</Label>
                   <span className="text-xs text-muted-foreground">
@@ -624,7 +631,10 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                         variant={active ? "default" : "outline"}
                         onClick={() => setPaymentType(option.value)}
                         disabled={isSubmitting}
-                        className={cn("justify-start", active && "shadow-sm")}
+                        className={cn(
+                          "justify-start",
+                          active && "shadow-[0_14px_30px_-20px_rgba(16,185,129,0.85)]",
+                        )}
                       >
                         <Icon data-icon="inline-start" />
                         {option.label}
@@ -642,7 +652,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                       onChange={(event) => setCustomerId(event.target.value)}
                       disabled={isSubmitting}
                       required
-                      className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+                      className="h-10 w-full rounded-lg border border-input bg-white/80 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
                     >
                       <option value="">Selecione</option>
                       {customers.map((customer) => (
@@ -667,6 +677,7 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                     value={discount}
                     onChange={(event) => setDiscount(event.target.value)}
                     disabled={isSubmitting}
+                    className="h-10 bg-white/80"
                   />
                 </div>
                 <div className="space-y-2">
@@ -674,13 +685,13 @@ export function SaleForm({ products, customers, error }: SaleFormProps) {
                   <Textarea
                     id="notes"
                     name="notes"
-                    className="min-h-10"
+                    className="min-h-10 bg-white/80"
                     disabled={isSubmitting}
                   />
                 </div>
               </div>
 
-              <div className="rounded-lg bg-red-700 p-4 text-white">
+              <div className="rounded-2xl bg-[linear-gradient(135deg,#064e3b,#059669_58%,#22c55e)] p-4 text-white shadow-[0_20px_45px_-28px_rgba(5,150,105,0.95)]">
                 <div className="flex justify-between text-sm text-white/80">
                   <span>Subtotal</span>
                   <span>{formatCurrency(subtotal)}</span>

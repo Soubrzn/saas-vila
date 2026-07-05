@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -29,9 +30,12 @@ export function StockMovementForm({
   message,
 }: StockMovementFormProps) {
   return (
-    <Card className="rounded-lg">
+    <Card className="border-white/70 bg-white/80 shadow-[0_24px_70px_-42px_rgba(15,23,42,0.9)] xl:sticky xl:top-24">
       <CardHeader>
         <CardTitle>Movimento</CardTitle>
+        <CardDescription>
+          Lance compra, ajuste de entrada ou ajuste de saida.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={registerStockMovementAction} className="space-y-4">
@@ -42,7 +46,7 @@ export function StockMovementForm({
               id="product_id"
               name="product_id"
               required
-              className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="h-10 w-full rounded-lg border border-input bg-white/70 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               <option value="">Selecione</option>
               {products.map((product) => (
@@ -58,7 +62,7 @@ export function StockMovementForm({
               id="movement_kind"
               name="movement_kind"
               defaultValue="purchase"
-              className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="h-10 w-full rounded-lg border border-input bg-white/70 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               <option value="purchase">Compra</option>
               <option value="adjustment_in">Ajuste entrada</option>
@@ -74,13 +78,18 @@ export function StockMovementForm({
               min="1"
               defaultValue="1"
               required
+              className="h-10 bg-white/70"
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="notes">Observacoes</Label>
-            <Textarea id="notes" name="notes" />
+            <Textarea id="notes" name="notes" className="bg-white/70" />
           </div>
-          <Button type="submit" disabled={products.length === 0}>
+          <Button
+            type="submit"
+            disabled={products.length === 0}
+            className="h-10 w-full"
+          >
             Registrar movimento
           </Button>
         </form>

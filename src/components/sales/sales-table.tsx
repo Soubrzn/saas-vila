@@ -44,7 +44,7 @@ export function SalesTable({ sales }: SalesTableProps) {
   }
 
   return (
-    <div className="overflow-hidden rounded-lg border bg-background">
+    <div className="overflow-hidden rounded-3xl border bg-white/75 shadow-[0_18px_45px_-32px_rgba(15,23,42,0.65)] backdrop-blur-xl">
       <Table>
         <TableHeader>
           <TableRow>
@@ -65,7 +65,9 @@ export function SalesTable({ sales }: SalesTableProps) {
               </TableCell>
               <TableCell>{sale.customers?.name ?? "-"}</TableCell>
               <TableCell>
-                <Badge variant={sale.payment_type === "credit" ? "outline" : "secondary"}>
+                <Badge
+                  variant={sale.payment_type === "credit" ? "outline" : "secondary"}
+                >
                   {paymentLabels[sale.payment_type] ?? sale.payment_type}
                 </Badge>
               </TableCell>

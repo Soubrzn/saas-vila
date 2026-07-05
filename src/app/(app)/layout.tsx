@@ -26,7 +26,7 @@ export default async function AppLayout({ children }: AppLayoutProps) {
   }
 
   return (
-    <div className="flex min-h-dvh bg-muted/30">
+    <div className="flex min-h-dvh bg-transparent">
       <AppSidebar shopName={context.shop.name} />
       <div className="flex min-w-0 flex-1 flex-col">
         <AppHeader

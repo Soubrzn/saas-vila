@@ -4,6 +4,7 @@ import {
   Boxes,
   ClipboardList,
   Home,
+  LineChart,
   Menu,
   Package,
   ReceiptText,
@@ -29,6 +30,7 @@ const navItems = [
   { href: "/clientes", label: "Clientes", icon: Users },
   { href: "/fiados", label: "Fiados", icon: ClipboardList },
   { href: "/estoque", label: "Estoque", icon: Boxes },
+  { href: "/relatorios", label: "Relatorios", icon: LineChart },
 ];
 
 export function MobileNav() {
