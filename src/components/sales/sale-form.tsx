@@ -568,13 +568,25 @@ export function SaleForm({
           <div
             className={cn(
               "flex min-h-0 flex-1 flex-col p-4",
-              fullscreen && "overflow-y-auto",
+              fullscreen && "overflow-y-auto p-3",
             )}
           >
-            <div className="min-h-64 flex-1 space-y-2 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/80 p-2">
+            <div
+              className={cn(
+                "min-h-64 flex-1 space-y-2 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/80 p-2",
+                fullscreen && "h-[clamp(7rem,17dvh,9rem)] min-h-0 flex-none",
+              )}
+            >
               {cartRows.length === 0 ? (
-                <div className="flex h-full min-h-56 flex-col items-center justify-center text-center text-sm text-muted-foreground">
-                  <ShoppingCart className="mb-2 size-8" />
+                <div
+                  className={cn(
+                    "flex h-full min-h-56 flex-col items-center justify-center text-center text-sm text-muted-foreground",
+                    fullscreen && "min-h-0",
+                  )}
+                >
+                  <ShoppingCart
+                    className={cn("mb-2 size-8", fullscreen && "size-7")}
+                  />
                   Caixa livre
                 </div>
               ) : (
@@ -646,15 +658,20 @@ export function SaleForm({
               )}
             </div>
 
-            <div className="mt-4 space-y-4">
-              <div className="rounded-2xl border border-slate-200 bg-white/75 p-3 shadow-sm">
-                <div className="mb-2 flex items-center justify-between">
+            <div className={cn("mt-4 space-y-4", fullscreen && "mt-3 space-y-3")}>
+              <div
+                className={cn(
+                  "rounded-2xl border border-slate-200 bg-white/75 p-3 shadow-sm",
+                  fullscreen && "p-2.5",
+                )}
+              >
+                <div className={cn("mb-2 flex items-center justify-between", fullscreen && "mb-1")}>
                   <Label>Forma de pagamento</Label>
                   <span className="text-xs text-muted-foreground">
                     {currentPayment?.shortcut}
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className={cn("grid grid-cols-2 gap-2", fullscreen && "gap-1.5")}>
                   {paymentOptions.map((option) => {
                     const Icon = option.icon;
                     const active = paymentType === option.value;
@@ -700,7 +717,12 @@ export function SaleForm({
                 ) : null}
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              <div
+                className={cn(
+                  "grid gap-3 sm:grid-cols-2 lg:grid-cols-1",
+                  fullscreen && "grid-cols-2 gap-2",
+                )}
+              >
                 <div className="space-y-2">
                   <Label htmlFor="discount_total">Desconto</Label>
                   <Input
@@ -726,7 +748,12 @@ export function SaleForm({
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-[linear-gradient(135deg,#064e3b,#059669_58%,#22c55e)] p-4 text-white shadow-[0_20px_45px_-28px_rgba(5,150,105,0.95)]">
+              <div
+                className={cn(
+                  "rounded-2xl bg-[linear-gradient(135deg,#064e3b,#059669_58%,#22c55e)] p-4 text-white shadow-[0_20px_45px_-28px_rgba(5,150,105,0.95)]",
+                  fullscreen && "p-3",
+                )}
+              >
                 <div className="flex justify-between text-sm text-white/80">
                   <span>Subtotal</span>
                   <span>{formatCurrency(subtotal)}</span>
@@ -735,9 +762,14 @@ export function SaleForm({
                   <span>Desconto</span>
                   <span>{formatCurrency(discountNumber)}</span>
                 </div>
-                <div className="mt-3 flex items-end justify-between border-t border-white/20 pt-3">
+                <div
+                  className={cn(
+                    "mt-3 flex items-end justify-between border-t border-white/20 pt-3",
+                    fullscreen && "mt-2 pt-2",
+                  )}
+                >
                   <span className="text-sm uppercase tracking-wide">Total</span>
-                  <span className="text-3xl font-semibold">
+                  <span className={cn("text-3xl font-semibold", fullscreen && "text-2xl")}>
                     {formatCurrency(total)}
                   </span>
                 </div>

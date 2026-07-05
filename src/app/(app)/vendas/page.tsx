@@ -1,4 +1,4 @@
-import { ExternalLink, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 
 import { PageHeader } from "@/components/common/page-header";
@@ -37,7 +37,6 @@ export default async function SalesPage() {
               rel="noreferrer"
               className={buttonVariants({ variant: "outline", size: "sm" })}
             >
-              <ExternalLink data-icon="inline-start" />
               PDV
             </Link>
             <Link
