@@ -196,6 +196,7 @@ export function SaleForm({
           : item,
       );
     });
+    setQuantityToAdd("1");
   }
 
   function decreaseProduct(productId: string) {
