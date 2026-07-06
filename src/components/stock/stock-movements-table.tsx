@@ -48,7 +48,7 @@ export function StockMovementsTable({ movements }: StockMovementsTableProps) {
   }
 
   return (
-    <div className="overflow-hidden rounded-lg border bg-card">
+    <div className="overflow-hidden rounded-3xl border border-white/70 bg-white/75 shadow-[0_22px_60px_-42px_rgba(15,23,42,0.75)] backdrop-blur-xl">
       <Table>
         <TableHeader>
           <TableRow>

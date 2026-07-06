@@ -251,7 +251,7 @@ export function StandardSaleForm({
       <div className="space-y-6">
         <StatusMessage error={error} />
 
-        <Card className="rounded-lg">
+        <Card className="border-white/70 bg-white/80">
           <CardHeader>
             <CardTitle>{isQuote ? "Itens do orcamento" : "Itens"}</CardTitle>
           </CardHeader>
@@ -300,7 +300,7 @@ export function StandardSaleForm({
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-lg border bg-card">
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white/75">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -377,7 +377,7 @@ export function StandardSaleForm({
         </Card>
       </div>
 
-      <Card className="h-fit rounded-lg lg:sticky lg:top-20">
+      <Card className="h-fit border-white/70 bg-white/80 lg:sticky lg:top-24">
         <CardHeader>
           <CardTitle>Resumo</CardTitle>
         </CardHeader>
@@ -456,7 +456,7 @@ export function StandardSaleForm({
             />
           </div>
 
-          <div className="rounded-lg bg-slate-950 p-4 text-white">
+          <div className="rounded-2xl bg-slate-950 p-4 text-white">
             <div className="flex justify-between text-sm text-white/70">
               <span>Subtotal</span>
               <span>{formatCurrency(subtotal)}</span>

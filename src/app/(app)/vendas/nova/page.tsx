@@ -32,15 +32,15 @@ export default function NewSaleChoicePage() {
 
           return (
             <Link key={option.href} href={option.href} className="block">
-              <Card className="h-full rounded-lg transition-colors hover:border-primary">
+              <Card className="h-full border-white/70 bg-white/80 transition-all hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-[0_28px_70px_-45px_rgba(15,23,42,0.95)]">
                 <CardHeader>
-                  <div className="mb-3 flex size-10 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                    <Icon className="size-5" />
+                  <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-slate-950 text-emerald-300">
+                    <Icon className="size-6" />
                   </div>
                   <CardTitle>{option.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <span className="text-sm font-medium text-primary">
+                  <span className="text-sm font-medium text-emerald-700">
                     Abrir
                   </span>
                 </CardContent>

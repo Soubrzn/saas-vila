@@ -22,7 +22,7 @@ type LowStockCardProps = {
 
 export function LowStockCard({ products }: LowStockCardProps) {
   return (
-    <Card className="rounded-lg">
+    <Card className="rounded-3xl">
       <CardHeader>
         <CardTitle>Estoque baixo</CardTitle>
       </CardHeader>
@@ -38,7 +38,7 @@ export function LowStockCard({ products }: LowStockCardProps) {
               <Link
                 key={product.id}
                 href="/produtos"
-                className="flex items-center justify-between rounded-lg border bg-card px-3 py-3 text-sm transition-colors hover:bg-muted/50"
+                className="flex items-center justify-between rounded-2xl border bg-white/60 px-3 py-3 text-sm transition-all hover:-translate-y-0.5 hover:bg-white"
               >
                 <span className="font-medium">{product.name}</span>
                 <span className="text-muted-foreground">

@@ -50,7 +50,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       />
       <div className="space-y-4 p-4 sm:p-6">
         <StatusMessage error={params.error} message={params.message} />
-        <form className="flex max-w-xl items-center gap-2 rounded-lg border bg-card px-3 py-2">
+        <form className="flex max-w-xl items-center gap-2 rounded-3xl border bg-white/70 px-3 py-2 shadow-sm backdrop-blur-xl">
           <Search className="size-4 text-muted-foreground" />
           <Input
             name="q"

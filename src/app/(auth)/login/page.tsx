@@ -1,7 +1,11 @@
 import {
   ArrowRight,
+  BadgeCheck,
+  Boxes,
+  ReceiptText,
   Store,
 } from "lucide-react";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import { signInAction, signUpAction } from "@/actions/auth";
@@ -24,6 +28,12 @@ type LoginPageProps = {
   }>;
 };
 
+const proofItems = [
+  { icon: ReceiptText, label: "PDV" },
+  { icon: Boxes, label: "Estoque" },
+  { icon: BadgeCheck, label: "Fiado" },
+];
+
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { user, shop } = await getCurrentContext();
   const params = await searchParams;
@@ -37,22 +47,62 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   }
 
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-background p-4">
-      <section className="w-full max-w-md">
-        <div className="mb-6 flex items-center gap-3">
-          <div className="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Store className="size-5" />
+    <main className="relative min-h-dvh overflow-hidden bg-[#071013] text-white">
+      <Image
+        src="/brand/saas-vila-hero.png"
+        alt=""
+        fill
+        priority
+        className="object-cover object-center opacity-55"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,16,19,0.96),rgba(7,16,19,0.72)_48%,rgba(7,16,19,0.35))]" />
+
+      <section className="relative z-10 grid min-h-dvh gap-10 px-4 py-6 sm:px-8 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-center lg:px-12">
+        <div className="flex min-h-[48dvh] flex-col justify-between gap-10 py-4 lg:min-h-[82dvh]">
+          <div className="flex items-center gap-3">
+            <div className="flex size-11 items-center justify-center rounded-2xl bg-emerald-400 text-slate-950 shadow-[0_0_40px_rgba(52,211,153,0.45)]">
+              <Store className="size-5" />
+            </div>
+            <div>
+              <p className="text-lg font-semibold tracking-normal">SaaS Vila</p>
+              <p className="text-xs text-emerald-100">Vendas, estoque e fiado</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-semibold">SaaS Vila</h1>
-            <p className="text-sm text-muted-foreground">
-              Vendas, estoque e fiado.
+
+          <div className="max-w-3xl">
+            <h1 className="max-w-3xl text-5xl font-semibold leading-[1.02] tracking-normal text-white sm:text-6xl lg:text-7xl">
+              SaaS Vila
+            </h1>
+            <p className="mt-5 max-w-xl text-base leading-7 text-white/74 sm:text-lg">
+              Gestao simples para pequenos comercios.
             </p>
+            <div className="mt-8 grid max-w-md gap-3 sm:grid-cols-3">
+              {proofItems.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div
+                    key={item.label}
+                    className="rounded-2xl border border-white/12 bg-white/10 p-3 backdrop-blur-xl"
+                  >
+                    <Icon className="mb-3 size-5 text-emerald-300" />
+                    <p className="text-sm font-medium text-white">
+                      {item.label}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
+
+          <div />
         </div>
 
-        <Card className="rounded-lg">
+        <Card className="rounded-3xl border-white/15 bg-white/92 text-slate-950 shadow-[0_32px_80px_-38px_rgba(0,0,0,0.75)]">
           <CardHeader>
+            <div className="mb-2 flex size-11 items-center justify-center rounded-2xl bg-slate-950 text-emerald-300">
+              <Store className="size-5" />
+            </div>
             <CardTitle className="text-xl">Entrar</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">

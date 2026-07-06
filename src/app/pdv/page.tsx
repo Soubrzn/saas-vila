@@ -49,7 +49,7 @@ export default async function ExternalPdvPage({
   const products = productsResponse.data ?? [];
 
   return (
-    <main className="h-dvh overflow-hidden bg-background">
+    <main className="h-dvh overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_30%),linear-gradient(135deg,#f8fafc,#eefdf7_44%,#eef6ff)]">
       {products.length === 0 ? (
         <div className="mx-auto max-w-3xl pt-8">
           <EmptyState

@@ -66,6 +66,16 @@ const paymentOptions = [
   { value: "credit", label: "Fiado", shortcut: "F11", icon: UserRound },
 ];
 
+const shortcuts = [
+  { key: "F2", label: "Produto" },
+  { key: "Enter", label: "Item" },
+  { key: "F3", label: "Preco" },
+  { key: "F4", label: "Remover" },
+  { key: "F6", label: "Limpar" },
+  { key: "F9", label: "Finalizar" },
+  { key: "Esc", label: "Sair" },
+];
+
 function numberValue(value: string | number) {
   return typeof value === "number" ? value : Number(value);
 }
@@ -342,8 +352,8 @@ export function SaleForm({
         setIsSubmitting(true);
       }}
       className={cn(
-        "overflow-hidden border bg-card",
-        fullscreen ? "h-dvh rounded-none border-0" : "rounded-lg",
+        "overflow-hidden border border-white/70 bg-white/80 shadow-[0_30px_90px_-48px_rgba(15,23,42,0.95)] backdrop-blur-xl",
+        fullscreen ? "h-dvh rounded-none border-0 shadow-none" : "rounded-3xl",
       )}
     >
       <input type="hidden" name="sale_request_id" value={saleRequestId} />
@@ -362,17 +372,28 @@ export function SaleForm({
           <div className="bg-slate-950 px-4 py-3 text-white">
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
               <div className="inline-flex items-center gap-2 font-semibold">
-                <span className="size-2 rounded-full bg-emerald-400" />
+                <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.9)]" />
                 PDV
+              </div>
+              <div className="flex flex-wrap gap-2 text-white/85">
+                {shortcuts.map((shortcut) => (
+                  <span
+                    key={shortcut.key}
+                    className="rounded-full border border-white/10 bg-white/10 px-2.5 py-1"
+                  >
+                    <strong className="text-emerald-200">{shortcut.key}</strong>{" "}
+                    {shortcut.label}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
 
-          <div className="border-b bg-card px-4 py-4">
-            <div className="truncate text-2xl font-semibold tracking-normal">
+          <div className="bg-[linear-gradient(135deg,#0f766e,#0891b2_55%,#7c3aed)] px-4 py-5 text-white">
+            <div className="truncate text-3xl font-semibold tracking-normal sm:text-4xl">
               {selectedProduct ? selectedProduct.name : "CAIXA LIVRE"}
             </div>
-            <div className="mt-1 text-sm text-muted-foreground">
+            <div className="mt-1 text-sm text-white/75">
               {priceMode ? "Consulta de preco" : "Venda"}
             </div>
           </div>
@@ -384,7 +405,7 @@ export function SaleForm({
             )}
           >
             <div className={cn("space-y-4", fullscreen && "min-h-0 overflow-y-auto pr-1")}>
-              <div className="rounded-lg border bg-card p-4">
+              <div className="rounded-2xl border border-white/70 bg-white/85 p-4 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.8)] backdrop-blur-xl">
                 <div className="mb-3 flex items-center gap-2 text-sm font-medium">
                   <PackageSearch className="size-4" />
                   Produto
@@ -392,7 +413,7 @@ export function SaleForm({
                 <div className="space-y-3">
                   <div className="space-y-2">
                     <Label htmlFor="product-search">Busca</Label>
-                    <div className="flex items-center gap-2 rounded-lg border bg-white/80 px-3">
+                    <div className="flex items-center gap-2 rounded-xl border bg-white/80 px-3">
                       <Search className="size-4 text-muted-foreground" />
                       <input
                         id="product-search"
@@ -426,7 +447,7 @@ export function SaleForm({
                 </div>
               </div>
 
-              <div className="rounded-lg border bg-card p-4">
+              <div className="rounded-2xl border border-white/70 bg-white/85 p-4 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.8)] backdrop-blur-xl">
                 <div className="mb-3 flex items-center gap-2 text-sm font-medium">
                   <DollarSign className="size-4" />
                   Preco
@@ -440,13 +461,13 @@ export function SaleForm({
                       </p>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
-                      <div className="rounded-lg bg-emerald-50 p-3 ring-1 ring-emerald-100">
+                      <div className="rounded-xl bg-emerald-50 p-3 ring-1 ring-emerald-100">
                         <p className="text-xs text-muted-foreground">Preco</p>
                         <p className="text-xl font-semibold text-emerald-800">
                           {formatCurrency(selectedProduct.sale_price)}
                         </p>
                       </div>
-                      <div className="rounded-lg bg-slate-100 p-3 ring-1 ring-slate-200">
+                      <div className="rounded-xl bg-slate-100 p-3 ring-1 ring-slate-200">
                         <p className="text-xs text-muted-foreground">Estoque</p>
                         <p className="text-xl font-semibold">
                           {selectedProduct.current_stock}
@@ -502,7 +523,7 @@ export function SaleForm({
                         setSelectedProductId(product.id);
                       }}
                       className={cn(
-                        "min-h-28 rounded-lg border bg-card p-3 text-left transition-colors hover:border-primary",
+                        "min-h-28 rounded-2xl border border-white/70 bg-white/85 p-3 text-left shadow-[0_14px_36px_-34px_rgba(15,23,42,0.8)] transition-all hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-white",
                         isSelected && "border-emerald-500 ring-2 ring-emerald-500/20",
                         available <= 0 && "opacity-60",
                       )}
@@ -556,7 +577,7 @@ export function SaleForm({
           >
             <div
               className={cn(
-                "min-h-64 flex-1 space-y-2 overflow-y-auto rounded-lg border bg-muted/40 p-2",
+                "min-h-64 flex-1 space-y-2 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/80 p-2",
                 fullscreen && "h-[clamp(7rem,17dvh,9rem)] min-h-0 flex-none",
               )}
             >
@@ -576,7 +597,7 @@ export function SaleForm({
                 cartRows.map((item, index) => (
                   <div
                     key={item.product.id}
-                    className="rounded-lg border bg-white p-3"
+                    className="rounded-xl border border-white/80 bg-white p-3 shadow-sm"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
@@ -644,7 +665,7 @@ export function SaleForm({
             <div className={cn("mt-4 space-y-4", fullscreen && "mt-3 space-y-3")}>
               <div
                 className={cn(
-                  "rounded-lg border bg-card p-3",
+                  "rounded-2xl border border-slate-200 bg-white/75 p-3 shadow-sm",
                   fullscreen && "p-2.5",
                 )}
               >
@@ -733,7 +754,7 @@ export function SaleForm({
 
               <div
                 className={cn(
-                  "rounded-lg bg-slate-950 p-4 text-white",
+                  "rounded-2xl bg-[linear-gradient(135deg,#064e3b,#059669_58%,#22c55e)] p-4 text-white shadow-[0_20px_45px_-28px_rgba(5,150,105,0.95)]",
                   fullscreen && "p-3",
                 )}
               >

@@ -17,7 +17,7 @@ type CustomerFormProps = {
 
 export function CustomerForm({ error }: CustomerFormProps) {
   return (
-    <Card className="rounded-lg">
+    <Card className="border-white/70 bg-white/80 shadow-[0_24px_70px_-42px_rgba(15,23,42,0.9)]">
       <CardHeader>
         <CardTitle>Novo cliente</CardTitle>
       </CardHeader>

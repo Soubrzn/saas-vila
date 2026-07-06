@@ -29,7 +29,7 @@ export function StockMovementForm({
   message,
 }: StockMovementFormProps) {
   return (
-    <Card className="rounded-lg xl:sticky xl:top-20">
+    <Card className="border-white/70 bg-white/80 shadow-[0_24px_70px_-42px_rgba(15,23,42,0.9)] xl:sticky xl:top-24">
       <CardHeader>
         <CardTitle>Estoque</CardTitle>
       </CardHeader>

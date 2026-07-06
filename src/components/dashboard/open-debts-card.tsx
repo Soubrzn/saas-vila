@@ -23,7 +23,7 @@ type OpenDebtsCardProps = {
 
 export function OpenDebtsCard({ debts }: OpenDebtsCardProps) {
   return (
-    <Card className="rounded-lg">
+    <Card className="rounded-3xl">
       <CardHeader>
         <CardTitle>Fiados em aberto</CardTitle>
       </CardHeader>
@@ -42,7 +42,7 @@ export function OpenDebtsCard({ debts }: OpenDebtsCardProps) {
                 <Link
                   key={debt.id}
                   href="/fiados"
-                  className="flex items-center justify-between rounded-lg border bg-card px-3 py-3 text-sm transition-colors hover:bg-muted/50"
+                  className="flex items-center justify-between rounded-2xl border bg-white/60 px-3 py-3 text-sm transition-all hover:-translate-y-0.5 hover:bg-white"
                 >
                   <span className="font-medium">
                     {debt.customers?.name ?? "Cliente"}
