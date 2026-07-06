@@ -8,6 +8,10 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function registerSaleAction(formData: FormData) {
   const supabase = await createClient();
+  const returnToValue = formString(formData, "return_to");
+  const returnTo = returnToValue.startsWith("/")
+    ? returnToValue
+    : "/vendas/nova/venda";
   const customerId = formString(formData, "customer_id") || null;
   const paymentType = formString(formData, "payment_type");
   const notes = formString(formData, "notes");
@@ -24,7 +28,7 @@ export async function registerSaleAction(formData: FormData) {
       items = JSON.parse(itemsValue);
     } catch {
       redirect(
-        redirectWithParams("/vendas/nova", {
+        redirectWithParams(returnTo, {
           error: "Itens da venda invalidos.",
         }),
       );
@@ -38,7 +42,7 @@ export async function registerSaleAction(formData: FormData) {
     ];
   } else {
     redirect(
-      redirectWithParams("/vendas/nova", {
+      redirectWithParams(returnTo, {
         error: "Selecione um produto e informe a quantidade.",
       }),
     );
@@ -65,7 +69,7 @@ export async function registerSaleAction(formData: FormData) {
 
   if (error) {
     redirect(
-      redirectWithParams("/vendas/nova", {
+      redirectWithParams(returnTo, {
         error: error.message,
       }),
     );

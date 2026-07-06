@@ -64,6 +64,7 @@ export default async function ExternalPdvPage({
           products={products}
           customers={customersResponse.data ?? []}
           fullscreen
+          returnTo="/pdv"
         />
       )}
     </main>

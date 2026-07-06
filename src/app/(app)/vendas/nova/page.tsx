@@ -1,62 +1,60 @@
-import { PackagePlus } from "lucide-react";
+import { FileText, ReceiptText } from "lucide-react";
 import Link from "next/link";
 
-import { EmptyState } from "@/components/common/empty-state";
 import { PageHeader } from "@/components/common/page-header";
-import { SaleForm } from "@/components/sales/sale-form";
-import { buttonVariants } from "@/components/ui/button";
-import { requireCurrentShop } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-type NewSalePageProps = {
-  searchParams: Promise<{
-    error?: string;
-  }>;
-};
+const options = [
+  {
+    href: "/vendas/nova/orcamento",
+    title: "Orcamento",
+    description: "Monte uma proposta para o cliente sem baixar estoque.",
+    icon: FileText,
+  },
+  {
+    href: "/vendas/nova/venda",
+    title: "Venda",
+    description: "Registre uma venda normal, com cliente, pagamento e itens.",
+    icon: ReceiptText,
+  },
+];
 
-export default async function NewSalePage({ searchParams }: NewSalePageProps) {
-  const params = await searchParams;
-  const { shop } = await requireCurrentShop();
-  const supabase = await createClient();
-  const [productsResponse, customersResponse] = await Promise.all([
-    supabase
-      .from("products")
-      .select("id, name, sale_price, current_stock")
-      .eq("shop_id", shop.id)
-      .eq("active", true)
-      .order("name"),
-    supabase
-      .from("customers")
-      .select("id, name")
-      .eq("shop_id", shop.id)
-      .order("name"),
-  ]);
-
+export default function NewSaleChoicePage() {
   return (
     <>
       <PageHeader
-        title="PDV"
-        description="Venda de balcao com carrinho, atalhos e baixa automatica de estoque."
+        title="Nova venda"
+        description="Escolha se deseja fazer um orcamento ou registrar uma venda comum."
       />
-      <div className="p-4 sm:p-6">
-        {(productsResponse.data ?? []).length === 0 ? (
-          <div className="space-y-4">
-            <EmptyState
-              icon={PackagePlus}
-              title="Cadastre produtos antes da venda"
-              description="Cadastre os produtos e use Estoque para lancar compras ou ajustes de entrada."
-            />
-            <Link href="/produtos/novo" className={buttonVariants()}>
-              Cadastrar produto
+      <div className="grid gap-4 p-4 sm:p-6 md:grid-cols-2">
+        {options.map((option) => {
+          const Icon = option.icon;
+
+          return (
+            <Link key={option.href} href={option.href} className="block">
+              <Card className="h-full border-white/70 bg-white/80 transition-all hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-[0_28px_70px_-45px_rgba(15,23,42,0.95)]">
+                <CardHeader>
+                  <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-slate-950 text-emerald-300">
+                    <Icon className="size-6" />
+                  </div>
+                  <CardTitle>{option.title}</CardTitle>
+                  <CardDescription>{option.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <span className="text-sm font-medium text-emerald-700">
+                    Abrir {option.title.toLowerCase()}
+                  </span>
+                </CardContent>
+              </Card>
             </Link>
-          </div>
-        ) : (
-          <SaleForm
-            error={params.error}
-            products={productsResponse.data ?? []}
-            customers={customersResponse.data ?? []}
-          />
-        )}
+          );
+        })}
       </div>
     </>
   );

@@ -56,6 +56,7 @@ type SaleFormProps = {
   customers: SaleCustomerOption[];
   error?: string;
   fullscreen?: boolean;
+  returnTo?: string;
 };
 
 const paymentOptions = [
@@ -88,6 +89,7 @@ export function SaleForm({
   customers,
   error,
   fullscreen = false,
+  returnTo = "/vendas/nova",
 }: SaleFormProps) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
@@ -358,6 +360,7 @@ export function SaleForm({
       <input type="hidden" name="items" value={itemsPayload} />
       <input type="hidden" name="payment_type" value={paymentType} />
       <input type="hidden" name="customer_id" value={customerId} />
+      <input type="hidden" name="return_to" value={returnTo} />
 
       <div
         className={cn(
