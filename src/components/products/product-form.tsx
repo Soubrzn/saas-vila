@@ -1,6 +1,6 @@
 import { createProductAction } from "@/actions/products";
 import { StatusMessage } from "@/components/common/status-message";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/common/submit-button";
 import {
   Card,
   CardContent,
@@ -84,9 +84,13 @@ export function ProductForm({ error }: ProductFormProps) {
               />
             </div>
           </div>
-          <Button type="submit" className="h-10 w-full sm:w-auto">
+          <SubmitButton
+            type="submit"
+            pendingLabel="Salvando..."
+            className="h-10 w-full sm:w-auto"
+          >
             Adicionar produto
-          </Button>
+          </SubmitButton>
         </form>
       </CardContent>
     </Card>

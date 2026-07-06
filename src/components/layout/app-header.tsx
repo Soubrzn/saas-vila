@@ -1,8 +1,8 @@
 import { LogOut } from "lucide-react";
 
 import { signOutAction } from "@/actions/auth";
+import { SubmitButton } from "@/components/common/submit-button";
 import { MobileNav } from "@/components/layout/mobile-nav";
-import { Button } from "@/components/ui/button";
 
 type AppHeaderProps = {
   shopName: string;
@@ -23,10 +23,15 @@ export function AppHeader({ shopName, userEmail }: AppHeaderProps) {
           {userEmail}
         </span>
         <form action={signOutAction}>
-          <Button type="submit" variant="outline" size="sm">
+          <SubmitButton
+            type="submit"
+            variant="outline"
+            size="sm"
+            pendingLabel="Saindo..."
+          >
             <LogOut data-icon="inline-start" />
             Sair
-          </Button>
+          </SubmitButton>
         </form>
       </div>
     </header>

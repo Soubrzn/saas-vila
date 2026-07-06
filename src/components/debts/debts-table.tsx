@@ -2,7 +2,7 @@ import { HandCoins } from "lucide-react";
 
 import { registerDebtPaymentAction } from "@/actions/debts";
 import { EmptyState } from "@/components/common/empty-state";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/common/submit-button";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -78,9 +78,14 @@ export function DebtsTable({ debts }: DebtsTableProps) {
                       className="w-28"
                       required
                     />
-                    <Button type="submit" variant="outline" size="sm">
+                    <SubmitButton
+                      type="submit"
+                      variant="outline"
+                      size="sm"
+                      pendingLabel="Registrando..."
+                    >
                       Registrar
-                    </Button>
+                    </SubmitButton>
                   </form>
                 </TableCell>
               </TableRow>

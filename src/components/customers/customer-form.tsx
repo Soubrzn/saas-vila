@@ -1,6 +1,6 @@
 import { createCustomerAction } from "@/actions/customers";
 import { StatusMessage } from "@/components/common/status-message";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/common/submit-button";
 import {
   Card,
   CardContent,
@@ -47,9 +47,13 @@ export function CustomerForm({ error }: CustomerFormProps) {
             <Label htmlFor="notes">Observacoes</Label>
             <Textarea id="notes" name="notes" className="bg-white/70" />
           </div>
-          <Button type="submit" className="h-10 w-full sm:w-auto">
+          <SubmitButton
+            type="submit"
+            pendingLabel="Salvando..."
+            className="h-10 w-full sm:w-auto"
+          >
             Salvar cliente
-          </Button>
+          </SubmitButton>
         </form>
       </CardContent>
     </Card>

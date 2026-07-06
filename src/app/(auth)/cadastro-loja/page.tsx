@@ -3,8 +3,8 @@ import { redirect } from "next/navigation";
 
 import { createShopAction } from "@/actions/shops";
 import { StatusMessage } from "@/components/common/status-message";
+import { SubmitButton } from "@/components/common/submit-button";
 import { DbSetupRequired } from "@/components/layout/db-setup-required";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -61,9 +61,13 @@ export default async function ShopOnboardingPage({
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
+            <SubmitButton
+              type="submit"
+              pendingLabel="Criando..."
+              className="w-full"
+            >
               Criar loja
-            </Button>
+            </SubmitButton>
           </form>
         </CardContent>
       </Card>

@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 
 import { signInAction, signUpAction } from "@/actions/auth";
 import { StatusMessage } from "@/components/common/status-message";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/common/submit-button";
 import {
   Card,
   CardContent,
@@ -131,18 +131,24 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 />
               </div>
               <div className="grid gap-2">
-                <Button type="submit" size="lg" formAction={signInAction}>
+                <SubmitButton
+                  type="submit"
+                  size="lg"
+                  formAction={signInAction}
+                  pendingLabel="Entrando..."
+                >
                   Entrar
                   <ArrowRight data-icon="inline-end" />
-                </Button>
-                <Button
+                </SubmitButton>
+                <SubmitButton
                   type="submit"
                   size="lg"
                   variant="outline"
                   formAction={signUpAction}
+                  pendingLabel="Criando..."
                 >
                   Criar conta
-                </Button>
+                </SubmitButton>
               </div>
             </form>
           </CardContent>

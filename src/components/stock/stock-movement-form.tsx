@@ -1,6 +1,6 @@
 import { registerStockMovementAction } from "@/actions/stock";
 import { StatusMessage } from "@/components/common/status-message";
-import { Button } from "@/components/ui/button";
+import { SubmitButton } from "@/components/common/submit-button";
 import {
   Card,
   CardContent,
@@ -81,13 +81,14 @@ export function StockMovementForm({
             <Label htmlFor="notes">Observacoes</Label>
             <Textarea id="notes" name="notes" className="bg-white/70" />
           </div>
-          <Button
+          <SubmitButton
             type="submit"
             disabled={products.length === 0}
+            pendingLabel="Registrando..."
             className="h-10 w-full"
           >
             Registrar
-          </Button>
+          </SubmitButton>
         </form>
       </CardContent>
     </Card>
