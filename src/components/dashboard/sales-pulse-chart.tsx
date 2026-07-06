@@ -5,40 +5,92 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatters";
+import { cn } from "@/lib/utils";
 
-type SalesPulseChartProps = {
+export type SalesPulsePoint = {
+  key: string;
+  label: string;
   total: number;
   count: number;
 };
 
-const bars = [38, 58, 42, 74, 50, 88, 64];
+type SalesPulseChartProps = {
+  points?: SalesPulsePoint[];
+  todayTotal?: number;
+  todayCount?: number;
+  total?: number;
+  count?: number;
+};
 
-export function SalesPulseChart({ total, count }: SalesPulseChartProps) {
+export function SalesPulseChart({
+  points,
+  todayTotal,
+  todayCount,
+  total,
+  count,
+}: SalesPulseChartProps) {
+  const fallbackTotal = total ?? 0;
+  const fallbackCount = count ?? 0;
+  const chartPoints =
+    points && points.length > 0
+      ? points
+      : Array.from({ length: 7 }, (_, index) => ({
+          key: `fallback-${index}`,
+          label: String(index + 1),
+          total: index === 6 ? fallbackTotal : 0,
+          count: index === 6 ? fallbackCount : 0,
+        }));
+  const displayedTotal = todayTotal ?? fallbackTotal;
+  const displayedCount = todayCount ?? fallbackCount;
+  const maxTotal = Math.max(...chartPoints.map((point) => point.total), 0);
+
   return (
     <Card className="rounded-3xl">
       <CardHeader>
         <CardTitle>Ritmo de vendas</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex h-44 items-end gap-2 rounded-3xl bg-slate-950 p-4">
-          {bars.map((height, index) => (
-            <div key={index} className="flex flex-1 flex-col items-center gap-2">
+        <div className="flex h-44 items-stretch gap-2 rounded-3xl bg-slate-950 p-4">
+          {chartPoints.map((point) => {
+            const height =
+              maxTotal > 0 ? Math.max(10, (point.total / maxTotal) * 100) : 0;
+
+            return (
               <div
-                className="w-full rounded-t-xl bg-gradient-to-t from-emerald-500 to-cyan-300 shadow-[0_0_24px_rgba(45,212,191,0.22)]"
-                style={{ height: `${height}%` }}
-              />
-              <span className="text-[10px] text-white/45">{index + 1}</span>
-            </div>
-          ))}
+                key={point.key}
+                className="flex h-full flex-1 flex-col justify-end gap-2"
+                title={`${point.label}: ${formatCurrency(point.total)} em ${point.count} venda(s)`}
+              >
+                <div className="flex min-h-0 flex-1 items-end">
+                  <div
+                    className={cn(
+                      "w-full rounded-t-xl transition-all",
+                      point.total > 0
+                        ? "bg-gradient-to-t from-emerald-500 to-cyan-300 shadow-[0_0_24px_rgba(45,212,191,0.22)]"
+                        : "bg-white/10",
+                    )}
+                    style={{
+                      height: point.total > 0 ? `${height}%` : "2px",
+                    }}
+                  />
+                </div>
+                <span className="text-center text-[10px] text-white/55">
+                  {point.label}
+                </span>
+              </div>
+            );
+          })}
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <div className="rounded-2xl bg-muted/70 p-3">
             <p className="text-xs text-muted-foreground">Hoje</p>
-            <p className="text-lg font-semibold">{formatCurrency(total)}</p>
+            <p className="text-lg font-semibold">
+              {formatCurrency(displayedTotal)}
+            </p>
           </div>
           <div className="rounded-2xl bg-muted/70 p-3">
             <p className="text-xs text-muted-foreground">Vendas</p>
-            <p className="text-lg font-semibold">{count}</p>
+            <p className="text-lg font-semibold">{displayedCount}</p>
           </div>
         </div>
       </CardContent>
