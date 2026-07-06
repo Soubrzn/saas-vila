@@ -32,18 +32,17 @@ export function DebtsTable({ debts }: DebtsTableProps) {
       <EmptyState
         icon={HandCoins}
         title="Nenhum fiado em aberto"
-        description="Quando uma venda fiado for registrada, a divida aparecera aqui."
       />
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border bg-white/75 shadow-[0_18px_45px_-32px_rgba(15,23,42,0.65)] backdrop-blur-xl">
+    <div className="overflow-hidden rounded-lg border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Cliente</TableHead>
-            <TableHead>Valor aberto</TableHead>
+            <TableHead>Em aberto</TableHead>
             <TableHead>Desde</TableHead>
             <TableHead>Pagamento</TableHead>
           </TableRow>
@@ -80,7 +79,7 @@ export function DebtsTable({ debts }: DebtsTableProps) {
                       required
                     />
                     <Button type="submit" variant="outline" size="sm">
-                      Abater
+                      Registrar
                     </Button>
                   </form>
                 </TableCell>

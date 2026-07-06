@@ -14,10 +14,7 @@ export default async function NewProductPage({
 
   return (
     <>
-      <PageHeader
-        title="Novo produto"
-        description="Informe precos e limites de estoque."
-      />
+      <PageHeader title="Novo produto" />
       <div className="max-w-3xl p-4 sm:p-6">
         <ProductForm error={params.error} />
       </div>

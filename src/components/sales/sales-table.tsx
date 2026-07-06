@@ -39,13 +39,12 @@ export function SalesTable({ sales }: SalesTableProps) {
       <EmptyState
         icon={ReceiptText}
         title="Nenhuma venda registrada"
-        description="As vendas aparecem aqui depois de registradas no caixa."
       />
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border bg-white/75 shadow-[0_18px_45px_-32px_rgba(15,23,42,0.65)] backdrop-blur-xl">
+    <div className="overflow-hidden rounded-lg border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
@@ -54,7 +53,7 @@ export function SalesTable({ sales }: SalesTableProps) {
             <TableHead>Pagamento</TableHead>
             <TableHead>Total</TableHead>
             <TableHead>Data</TableHead>
-            <TableHead className="text-right">Abrir</TableHead>
+            <TableHead className="text-right">Acoes</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

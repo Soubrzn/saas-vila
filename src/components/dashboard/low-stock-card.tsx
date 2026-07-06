@@ -22,7 +22,7 @@ type LowStockCardProps = {
 
 export function LowStockCard({ products }: LowStockCardProps) {
   return (
-    <Card className="rounded-3xl">
+    <Card className="rounded-lg">
       <CardHeader>
         <CardTitle>Estoque baixo</CardTitle>
       </CardHeader>
@@ -30,8 +30,7 @@ export function LowStockCard({ products }: LowStockCardProps) {
         {products.length === 0 ? (
           <EmptyState
             icon={PackageX}
-            title="Nenhum produto abaixo do minimo"
-            description="Quando o estoque atual ficar igual ou abaixo do minimo, ele aparece aqui."
+            title="Estoque em dia"
           />
         ) : (
           <div className="space-y-3">
@@ -39,7 +38,7 @@ export function LowStockCard({ products }: LowStockCardProps) {
               <Link
                 key={product.id}
                 href="/produtos"
-                className="flex items-center justify-between rounded-2xl border bg-white/60 px-3 py-3 text-sm transition-all hover:-translate-y-0.5 hover:bg-white"
+                className="flex items-center justify-between rounded-lg border bg-card px-3 py-3 text-sm transition-colors hover:bg-muted/50"
               >
                 <span className="font-medium">{product.name}</span>
                 <span className="text-muted-foreground">

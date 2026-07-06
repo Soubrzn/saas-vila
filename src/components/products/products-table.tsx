@@ -31,17 +31,16 @@ export function ProductsTable({ products }: ProductsTableProps) {
       <EmptyState
         icon={PackagePlus}
         title="Nenhum produto cadastrado"
-        description="Cadastre os produtos vendidos pela loja para comecar a controlar estoque."
       />
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border bg-white/75 shadow-[0_18px_45px_-32px_rgba(15,23,42,0.65)] backdrop-blur-xl">
+    <div className="overflow-hidden rounded-lg border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Produto</TableHead>
+            <TableHead>Nome</TableHead>
             <TableHead>Custo</TableHead>
             <TableHead>Venda</TableHead>
             <TableHead>Estoque</TableHead>

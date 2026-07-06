@@ -40,7 +40,6 @@ export default async function NewStandardSalePage({
     <>
       <PageHeader
         title="Venda"
-        description="Formulario normal para registrar uma venda sem interface de PDV."
         action={
           <Link
             href="/vendas/nova"
@@ -57,10 +56,9 @@ export default async function NewStandardSalePage({
             <EmptyState
               icon={PackagePlus}
               title="Cadastre produtos antes da venda"
-              description="Cadastre os produtos e use Estoque para lancar compras ou ajustes de entrada."
             />
             <Link href="/produtos/novo" className={buttonVariants()}>
-              Cadastrar produto
+              Adicionar produto
             </Link>
           </div>
         ) : (

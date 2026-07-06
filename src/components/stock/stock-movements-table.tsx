@@ -42,23 +42,22 @@ export function StockMovementsTable({ movements }: StockMovementsTableProps) {
     return (
       <EmptyState
         icon={RotateCw}
-        title="Nenhum movimento registrado"
-        description="Compras, vendas e ajustes de saldo aparecem aqui."
+        title="Sem registros"
       />
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-white/70 bg-white/75 shadow-[0_22px_60px_-42px_rgba(15,23,42,0.75)] backdrop-blur-xl">
+    <div className="overflow-hidden rounded-lg border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Data</TableHead>
             <TableHead>Produto</TableHead>
             <TableHead>Tipo</TableHead>
-            <TableHead>Movimento</TableHead>
+            <TableHead>Qtd.</TableHead>
             <TableHead>Saldo</TableHead>
-            <TableHead>Observacao</TableHead>
+            <TableHead>Obs.</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

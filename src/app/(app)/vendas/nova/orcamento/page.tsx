@@ -31,7 +31,6 @@ export default async function NewQuotePage() {
     <>
       <PageHeader
         title="Orcamento"
-        description="Monte um orcamento sem registrar venda e sem baixar estoque."
         action={
           <Link
             href="/vendas/nova"
@@ -48,10 +47,9 @@ export default async function NewQuotePage() {
             <EmptyState
               icon={PackagePlus}
               title="Cadastre produtos antes do orcamento"
-              description="Cadastre os produtos para montar orcamentos para seus clientes."
             />
             <Link href="/produtos/novo" className={buttonVariants()}>
-              Cadastrar produto
+              Adicionar produto
             </Link>
           </div>
         ) : (

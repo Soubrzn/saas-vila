@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -18,12 +17,9 @@ type CustomerFormProps = {
 
 export function CustomerForm({ error }: CustomerFormProps) {
   return (
-    <Card className="border-white/70 bg-white/80 shadow-[0_24px_70px_-42px_rgba(15,23,42,0.9)]">
+    <Card className="rounded-lg">
       <CardHeader>
         <CardTitle>Novo cliente</CardTitle>
-        <CardDescription>
-          Use clientes para vendas fiado e acompanhamento de pagamentos.
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={createCustomerAction} className="space-y-4">
@@ -52,7 +48,7 @@ export function CustomerForm({ error }: CustomerFormProps) {
             <Textarea id="notes" name="notes" className="bg-white/70" />
           </div>
           <Button type="submit" className="h-10 w-full sm:w-auto">
-            Cadastrar cliente
+            Salvar cliente
           </Button>
         </form>
       </CardContent>

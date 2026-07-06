@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -30,12 +29,9 @@ export function StockMovementForm({
   message,
 }: StockMovementFormProps) {
   return (
-    <Card className="border-white/70 bg-white/80 shadow-[0_24px_70px_-42px_rgba(15,23,42,0.9)] xl:sticky xl:top-24">
+    <Card className="rounded-lg xl:sticky xl:top-20">
       <CardHeader>
-        <CardTitle>Movimento</CardTitle>
-        <CardDescription>
-          Lance compra, ajuste de entrada ou ajuste de saida.
-        </CardDescription>
+        <CardTitle>Estoque</CardTitle>
       </CardHeader>
       <CardContent>
         <form action={registerStockMovementAction} className="space-y-4">
@@ -90,7 +86,7 @@ export function StockMovementForm({
             disabled={products.length === 0}
             className="h-10 w-full"
           >
-            Registrar movimento
+            Registrar
           </Button>
         </form>
       </CardContent>

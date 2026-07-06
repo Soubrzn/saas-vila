@@ -49,37 +49,34 @@ export default async function ReportsPage() {
 
   return (
     <>
-      <PageHeader
-        title="Relatorios"
-        description="Resumo financeiro simples para entender o mes, o caixa e os pontos de atencao."
-      />
+      <PageHeader title="Relatorios" />
       <div className="space-y-6 p-4 sm:p-6">
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <MetricCard
             title="Vendas no mes"
             value={formatCurrency(monthlyTotal)}
-            helper={`${monthlySales.length} venda(s) no periodo`}
+            helper={`${monthlySales.length} venda(s)`}
             icon={Banknote}
             tone="emerald"
           />
           <MetricCard
             title="Lucro estimado"
             value={formatCurrency(monthlyTotal * 0.28)}
-            helper="Base inicial para acompanhar margem"
+            helper="28% do total"
             icon={ChartNoAxesCombined}
             tone="cyan"
           />
           <MetricCard
             title="Fiados abertos"
             value={formatCurrency(openDebtTotal)}
-            helper={`${openDebts.length} divida(s) aguardando pagamento`}
+            helper={`${openDebts.length} cliente(s)`}
             icon={HandCoins}
             tone="violet"
           />
           <MetricCard
             title="Estoque baixo"
             value={String(lowStockCount)}
-            helper="Produtos no minimo ou abaixo"
+            helper="Itens"
             icon={PackageCheck}
             tone="amber"
           />

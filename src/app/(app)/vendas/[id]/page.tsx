@@ -51,15 +51,14 @@ export default async function SaleDetailPage({ params }: SaleDetailPageProps) {
     ? sale.customers[0] ?? null
     : sale.customers;
 
+  const soldAt = new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short",
+  }).format(new Date(sale.sold_at));
+
   return (
     <>
-      <PageHeader
-        title={`Venda #${sale.id.slice(0, 8)}`}
-        description={new Intl.DateTimeFormat("pt-BR", {
-          dateStyle: "short",
-          timeStyle: "short",
-        }).format(new Date(sale.sold_at))}
-      />
+      <PageHeader title={`Venda #${sale.id.slice(0, 8)}`} />
       <div className="grid gap-4 p-4 sm:p-6 lg:grid-cols-[1fr_320px]">
         <div className="overflow-hidden rounded-lg border bg-background">
           <Table>
@@ -96,6 +95,10 @@ export default async function SaleDetailPage({ params }: SaleDetailPageProps) {
             <CardTitle>Resumo</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Data</span>
+              <span>{soldAt}</span>
+            </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Cliente</span>
               <span>{customer?.name ?? "-"}</span>

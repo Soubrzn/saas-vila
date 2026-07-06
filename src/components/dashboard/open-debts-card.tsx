@@ -23,7 +23,7 @@ type OpenDebtsCardProps = {
 
 export function OpenDebtsCard({ debts }: OpenDebtsCardProps) {
   return (
-    <Card className="rounded-3xl">
+    <Card className="rounded-lg">
       <CardHeader>
         <CardTitle>Fiados em aberto</CardTitle>
       </CardHeader>
@@ -31,8 +31,7 @@ export function OpenDebtsCard({ debts }: OpenDebtsCardProps) {
         {debts.length === 0 ? (
           <EmptyState
             icon={ReceiptText}
-            title="Nenhum fiado em aberto"
-            description="Vendas marcadas como fiado entram automaticamente nesta lista."
+            title="Nenhum fiado"
           />
         ) : (
           <div className="space-y-3">
@@ -43,7 +42,7 @@ export function OpenDebtsCard({ debts }: OpenDebtsCardProps) {
                 <Link
                   key={debt.id}
                   href="/fiados"
-                  className="flex items-center justify-between rounded-2xl border bg-white/60 px-3 py-3 text-sm transition-all hover:-translate-y-0.5 hover:bg-white"
+                  className="flex items-center justify-between rounded-lg border bg-card px-3 py-3 text-sm transition-colors hover:bg-muted/50"
                 >
                   <span className="font-medium">
                     {debt.customers?.name ?? "Cliente"}

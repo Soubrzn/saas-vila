@@ -38,25 +38,24 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     <>
       <PageHeader
         title="Produtos"
-        description="Produtos com preco, margem e saldo em uma lista pronta para o balcao."
         action={
           <Link
             href="/produtos/novo"
             className={buttonVariants({ size: "sm" })}
           >
             <Plus data-icon="inline-start" />
-            Novo
+            Adicionar produto
           </Link>
         }
       />
       <div className="space-y-4 p-4 sm:p-6">
         <StatusMessage error={params.error} message={params.message} />
-        <form className="flex max-w-xl items-center gap-2 rounded-3xl border bg-white/70 px-3 py-2 shadow-sm backdrop-blur-xl">
+        <form className="flex max-w-xl items-center gap-2 rounded-lg border bg-card px-3 py-2">
           <Search className="size-4 text-muted-foreground" />
           <Input
             name="q"
             defaultValue={query}
-            placeholder="Buscar produto por nome"
+            placeholder="Buscar produto"
             className="border-0 bg-transparent shadow-none focus-visible:ring-0"
           />
         </form>

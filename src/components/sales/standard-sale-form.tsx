@@ -15,12 +15,10 @@ import { useMemo, useState } from "react";
 
 import { registerSaleAction } from "@/actions/sales";
 import { StatusMessage } from "@/components/common/status-message";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -253,21 +251,9 @@ export function StandardSaleForm({
       <div className="space-y-6">
         <StatusMessage error={error} />
 
-        <Card className="border-white/70 bg-white/80">
+        <Card className="rounded-lg">
           <CardHeader>
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <CardTitle>
-                  {isQuote ? "Itens do orcamento" : "Itens da venda"}
-                </CardTitle>
-                <CardDescription>
-                  Selecione produtos, informe a quantidade e monte o documento.
-                </CardDescription>
-              </div>
-              <Badge variant={isQuote ? "outline" : "secondary"}>
-                {isQuote ? "Nao baixa estoque" : "Baixa estoque ao finalizar"}
-              </Badge>
-            </div>
+            <CardTitle>{isQuote ? "Itens do orcamento" : "Itens"}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_140px_auto]">
@@ -314,7 +300,7 @@ export function StandardSaleForm({
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white/75">
+            <div className="overflow-hidden rounded-lg border bg-card">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -332,7 +318,7 @@ export function StandardSaleForm({
                         colSpan={5}
                         className="h-24 text-center text-muted-foreground"
                       >
-                        Nenhum item adicionado.
+                        Sem itens.
                       </TableCell>
                     </TableRow>
                   ) : (
@@ -391,34 +377,11 @@ export function StandardSaleForm({
         </Card>
       </div>
 
-      <Card className="h-fit border-white/70 bg-white/80 lg:sticky lg:top-24">
+      <Card className="h-fit rounded-lg lg:sticky lg:top-20">
         <CardHeader>
-          <CardTitle>{isQuote ? "Resumo do orcamento" : "Resumo"}</CardTitle>
-          <CardDescription>
-            {isQuote
-              ? "Confira os valores antes de imprimir."
-              : "Defina cliente, pagamento e finalize a venda."}
-          </CardDescription>
+          <CardTitle>Resumo</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="customer_id">Cliente</Label>
-            <select
-              id="customer_id"
-              value={customerId}
-              onChange={(event) => setCustomerId(event.target.value)}
-              required={paymentType === "credit" && !isQuote}
-              className="h-10 w-full rounded-lg border border-input bg-white/80 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-            >
-              <option value="">Sem cliente</option>
-              {customers.map((customer) => (
-                <option key={customer.id} value={customer.id}>
-                  {customer.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
           {!isQuote ? (
             <div className="space-y-2">
               <Label>Forma de pagamento</Label>
@@ -432,7 +395,13 @@ export function StandardSaleForm({
                       key={option.value}
                       type="button"
                       variant={active ? "default" : "outline"}
-                      onClick={() => setPaymentType(option.value)}
+                      onClick={() => {
+                        setPaymentType(option.value);
+
+                        if (option.value !== "credit") {
+                          setCustomerId("");
+                        }
+                      }}
                       className={cn("justify-start", active && "shadow-sm")}
                     >
                       <Icon data-icon="inline-start" />
@@ -441,6 +410,26 @@ export function StandardSaleForm({
                   );
                 })}
               </div>
+            </div>
+          ) : null}
+
+          {(isQuote || paymentType === "credit") ? (
+            <div className="space-y-2">
+              <Label htmlFor="customer_id">Cliente</Label>
+              <select
+                id="customer_id"
+                value={customerId}
+                onChange={(event) => setCustomerId(event.target.value)}
+                required={paymentType === "credit" && !isQuote}
+                className="h-10 w-full rounded-lg border border-input bg-white/80 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                <option value="">Sem cliente</option>
+                {customers.map((customer) => (
+                  <option key={customer.id} value={customer.id}>
+                    {customer.name}
+                  </option>
+                ))}
+              </select>
             </div>
           ) : null}
 
@@ -467,7 +456,7 @@ export function StandardSaleForm({
             />
           </div>
 
-          <div className="rounded-2xl bg-slate-950 p-4 text-white">
+          <div className="rounded-lg bg-slate-950 p-4 text-white">
             <div className="flex justify-between text-sm text-white/70">
               <span>Subtotal</span>
               <span>{formatCurrency(subtotal)}</span>
@@ -497,7 +486,7 @@ export function StandardSaleForm({
             ) : (
               <>
                 <ReceiptText data-icon="inline-start" />
-                {isSubmitting ? "Registrando..." : "Registrar venda"}
+                {isSubmitting ? "Finalizando..." : "Finalizar venda"}
               </>
             )}
           </Button>

@@ -29,14 +29,13 @@ export default async function CustomersPage({ searchParams }: CustomersPageProps
     <>
       <PageHeader
         title="Clientes"
-        description="Clientes usados em vendas fiado."
         action={
           <Link
             href="/clientes/novo"
             className={buttonVariants({ size: "sm" })}
           >
             <Plus data-icon="inline-start" />
-            Novo
+            Novo cliente
           </Link>
         }
       />

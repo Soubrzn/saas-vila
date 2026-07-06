@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -48,11 +47,7 @@ export default async function ShopOnboardingPage({
           <div className="mb-2 flex size-10 items-center justify-center rounded-lg bg-emerald-600 text-white">
             <Store className="size-5" />
           </div>
-          <CardTitle>Cadastre sua loja</CardTitle>
-          <CardDescription>
-            Essa loja sera o limite de dados para produtos, vendas, clientes e
-            fiados.
-          </CardDescription>
+          <CardTitle>Nova loja</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <StatusMessage error={params.error} message={params.message} />

@@ -41,10 +41,7 @@ export default async function StockPage({ searchParams }: StockPageProps) {
 
   return (
     <>
-      <PageHeader
-        title="Estoque"
-        description="Saldos atuais e historico de entradas e saidas."
-      />
+      <PageHeader title="Estoque" />
       <div className="grid gap-6 p-4 sm:p-6 xl:grid-cols-[1fr_360px]">
         <div className="space-y-6">
           <ProductsTable products={products} />

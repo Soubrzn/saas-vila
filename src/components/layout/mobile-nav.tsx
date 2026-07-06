@@ -25,11 +25,11 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
-  { href: "/produtos", label: "Produtos", icon: Package },
   { href: "/vendas", label: "Vendas", icon: ReceiptText },
+  { href: "/produtos", label: "Produtos", icon: Package },
+  { href: "/estoque", label: "Estoque", icon: Boxes },
   { href: "/clientes", label: "Clientes", icon: Users },
   { href: "/fiados", label: "Fiados", icon: ClipboardList },
-  { href: "/estoque", label: "Estoque", icon: Boxes },
   { href: "/relatorios", label: "Relatorios", icon: LineChart },
 ];
 

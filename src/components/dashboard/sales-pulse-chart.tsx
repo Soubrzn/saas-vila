@@ -45,12 +45,12 @@ export function SalesPulseChart({
   const maxTotal = Math.max(...chartPoints.map((point) => point.total), 0);
 
   return (
-    <Card className="rounded-3xl">
+    <Card className="rounded-lg">
       <CardHeader>
-        <CardTitle>Ritmo de vendas</CardTitle>
+        <CardTitle>Vendas 7 dias</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex h-44 items-stretch gap-2 rounded-3xl bg-slate-950 p-4">
+        <div className="flex h-44 items-stretch gap-2 rounded-lg border bg-muted/40 p-4">
           {chartPoints.map((point) => {
             const height =
               maxTotal > 0 ? Math.max(10, (point.total / maxTotal) * 100) : 0;
@@ -64,17 +64,17 @@ export function SalesPulseChart({
                 <div className="flex min-h-0 flex-1 items-end">
                   <div
                     className={cn(
-                      "w-full rounded-t-xl transition-all",
+                      "w-full rounded-t-md transition-all",
                       point.total > 0
-                        ? "bg-gradient-to-t from-emerald-500 to-cyan-300 shadow-[0_0_24px_rgba(45,212,191,0.22)]"
-                        : "bg-white/10",
+                        ? "bg-primary"
+                        : "bg-border",
                     )}
                     style={{
                       height: point.total > 0 ? `${height}%` : "2px",
                     }}
                   />
                 </div>
-                <span className="text-center text-[10px] text-white/55">
+                <span className="text-center text-[10px] text-muted-foreground">
                   {point.label}
                 </span>
               </div>
@@ -82,13 +82,13 @@ export function SalesPulseChart({
           })}
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl bg-muted/70 p-3">
+          <div className="rounded-lg bg-muted/70 p-3">
             <p className="text-xs text-muted-foreground">Hoje</p>
             <p className="text-lg font-semibold">
               {formatCurrency(displayedTotal)}
             </p>
           </div>
-          <div className="rounded-2xl bg-muted/70 p-3">
+          <div className="rounded-lg bg-muted/70 p-3">
             <p className="text-xs text-muted-foreground">Vendas</p>
             <p className="text-lg font-semibold">{displayedCount}</p>
           </div>

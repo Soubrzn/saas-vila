@@ -28,7 +28,6 @@ export default async function SalesPage() {
     <>
       <PageHeader
         title="Vendas"
-        description="Historico recente das vendas registradas."
         action={
           <>
             <Link
@@ -44,7 +43,7 @@ export default async function SalesPage() {
               className={buttonVariants({ size: "sm" })}
             >
               <Plus data-icon="inline-start" />
-              Nova
+              Nova venda
             </Link>
           </>
         }

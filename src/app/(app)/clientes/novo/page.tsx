@@ -14,10 +14,7 @@ export default async function NewCustomerPage({
 
   return (
     <>
-      <PageHeader
-        title="Novo cliente"
-        description="Cadastre clientes para controlar fiado."
-      />
+      <PageHeader title="Novo cliente" />
       <div className="max-w-3xl p-4 sm:p-6">
         <CustomerForm error={params.error} />
       </div>

@@ -31,10 +31,7 @@ export default async function DebtsPage({ searchParams }: DebtsPageProps) {
 
   return (
     <>
-      <PageHeader
-        title="Fiados"
-        description="Dividas abertas por cliente e abatimentos."
-      />
+      <PageHeader title="Fiados" />
       <div className="space-y-4 p-4 sm:p-6">
         <StatusMessage error={params.error} message={params.message} />
         <DebtsTable debts={rows} />

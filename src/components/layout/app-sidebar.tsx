@@ -2,12 +2,12 @@
 
 import {
   Boxes,
-  ChartNoAxesCombined,
   ClipboardList,
-  LineChart,
   Home,
+  LineChart,
   Package,
   ReceiptText,
+  Store,
   Users,
 } from "lucide-react";
 import Link from "next/link";
@@ -17,11 +17,11 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
-  { href: "/produtos", label: "Produtos", icon: Package },
   { href: "/vendas", label: "Vendas", icon: ReceiptText },
+  { href: "/produtos", label: "Produtos", icon: Package },
+  { href: "/estoque", label: "Estoque", icon: Boxes },
   { href: "/clientes", label: "Clientes", icon: Users },
   { href: "/fiados", label: "Fiados", icon: ClipboardList },
-  { href: "/estoque", label: "Estoque", icon: Boxes },
   { href: "/relatorios", label: "Relatorios", icon: LineChart },
 ];
 
@@ -33,14 +33,13 @@ export function AppSidebar({ shopName }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-72 shrink-0 border-r border-white/10 bg-sidebar text-sidebar-foreground md:flex md:flex-col">
-      <div className="relative overflow-hidden border-b border-white/10 px-5 py-5">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(52,211,153,0.2),transparent_12rem)]" />
+    <aside className="hidden w-64 shrink-0 border-r bg-sidebar text-sidebar-foreground md:flex md:flex-col">
+      <div className="border-b border-sidebar-border px-5 py-5">
         <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="relative flex size-11 items-center justify-center rounded-2xl bg-emerald-400 text-slate-950 shadow-[0_0_35px_rgba(52,211,153,0.38)]">
-            <ChartNoAxesCombined className="size-5" />
+          <div className="flex size-9 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+            <Store className="size-4" />
           </div>
-          <div className="relative min-w-0">
+          <div className="min-w-0">
             <p className="truncate text-base font-semibold text-white">SaaS Vila</p>
             <p className="truncate text-xs text-white/55">{shopName}</p>
           </div>
@@ -57,15 +56,15 @@ export function AppSidebar({ shopName }: AppSidebarProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                "group flex h-11 items-center gap-3 rounded-2xl px-3 text-sm font-medium text-white/72 transition-all hover:bg-white/8 hover:text-white",
+                "group flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-medium text-white/72 transition-colors hover:bg-white/8 hover:text-white",
                 active &&
-                  "bg-white/12 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]",
+                  "bg-white/12 text-white",
               )}
             >
               <span
                 className={cn(
-                  "flex size-8 items-center justify-center rounded-xl bg-white/7 text-white/70 transition-colors group-hover:text-emerald-200",
-                  active && "bg-emerald-400 text-slate-950",
+                  "flex size-7 items-center justify-center rounded-md text-white/70 transition-colors group-hover:text-white",
+                  active && "bg-sidebar-primary text-sidebar-primary-foreground",
                 )}
               >
                 <Icon className="size-4" />
@@ -75,13 +74,6 @@ export function AppSidebar({ shopName }: AppSidebarProps) {
           );
         })}
       </nav>
-      <div className="m-3 rounded-2xl border border-white/10 bg-white/7 p-4 text-sm text-white/70">
-        <p className="font-medium text-white">Modo Vila</p>
-        <p className="mt-1 text-xs leading-5">
-          Operacao simples para vender, repor e cobrar sem perder o ritmo do
-          balcao.
-        </p>
-      </div>
     </aside>
   );
 }

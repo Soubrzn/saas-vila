@@ -32,7 +32,7 @@ const paymentLabels: Record<string, string> = {
 
 export function RecentSalesCard({ sales }: RecentSalesCardProps) {
   return (
-    <Card className="rounded-3xl">
+    <Card className="rounded-lg">
       <CardHeader>
         <CardTitle>Ultimas vendas</CardTitle>
       </CardHeader>
@@ -40,8 +40,7 @@ export function RecentSalesCard({ sales }: RecentSalesCardProps) {
         {sales.length === 0 ? (
           <EmptyState
             icon={ReceiptText}
-            title="Nenhuma venda ainda"
-            description="Vendas feitas no PDV ou no formulario normal aparecem aqui."
+            title="Nenhuma venda"
           />
         ) : (
           <div className="space-y-3">
@@ -49,7 +48,7 @@ export function RecentSalesCard({ sales }: RecentSalesCardProps) {
               <Link
                 key={sale.id}
                 href={`/vendas/${sale.id}`}
-                className="flex items-center justify-between gap-3 rounded-2xl border bg-white/60 px-3 py-3 text-sm transition-all hover:-translate-y-0.5 hover:bg-white"
+                className="flex items-center justify-between gap-3 rounded-lg border bg-card px-3 py-3 text-sm transition-colors hover:bg-muted/50"
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">

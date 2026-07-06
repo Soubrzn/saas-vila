@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -17,12 +16,9 @@ type ProductFormProps = {
 
 export function ProductForm({ error }: ProductFormProps) {
   return (
-    <Card className="border-white/70 bg-white/80 shadow-[0_24px_70px_-42px_rgba(15,23,42,0.9)]">
+    <Card className="rounded-lg">
       <CardHeader>
         <CardTitle>Novo produto</CardTitle>
-        <CardDescription>
-          Cadastre o item uma vez e controle o saldo pela aba Estoque.
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={createProductAction} className="space-y-4">
@@ -65,6 +61,18 @@ export function ProductForm({ error }: ProductFormProps) {
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
+              <Label htmlFor="current_stock">Estoque inicial</Label>
+              <Input
+                id="current_stock"
+                name="current_stock"
+                type="number"
+                min="0"
+                defaultValue="0"
+                required
+                className="h-10 bg-white/70"
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="minimum_stock">Estoque minimo</Label>
               <Input
                 id="minimum_stock"
@@ -77,7 +85,7 @@ export function ProductForm({ error }: ProductFormProps) {
             </div>
           </div>
           <Button type="submit" className="h-10 w-full sm:w-auto">
-            Cadastrar produto
+            Adicionar produto
           </Button>
         </form>
       </CardContent>
