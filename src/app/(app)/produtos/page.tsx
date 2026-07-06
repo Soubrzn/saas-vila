@@ -2,11 +2,13 @@ import { Plus, Search } from "lucide-react";
 import Link from "next/link";
 
 import { PageHeader } from "@/components/common/page-header";
+import { PaginationControls } from "@/components/common/pagination-controls";
 import { StatusMessage } from "@/components/common/status-message";
 import { ProductsTable } from "@/components/products/products-table";
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { requireCurrentShop } from "@/lib/auth";
+import { DEFAULT_PAGE_SIZE, pageRange, parsePage } from "@/lib/pagination";
 import { createClient } from "@/lib/supabase/server";
 
 type ProductsPageProps = {
@@ -14,6 +16,7 @@ type ProductsPageProps = {
     error?: string;
     message?: string;
     q?: string;
+    page?: string;
   }>;
 };
 
@@ -22,9 +25,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const { shop } = await requireCurrentShop();
   const supabase = await createClient();
   const query = params.q?.trim() ?? "";
+  const page = parsePage(params.page);
+  const { from, to } = pageRange(page);
   let productsQuery = supabase
     .from("products")
-    .select("id, name, cost_price, sale_price, current_stock, minimum_stock")
+    .select("id, name, cost_price, sale_price, current_stock, minimum_stock", {
+      count: "exact",
+    })
     .eq("shop_id", shop.id)
     .eq("active", true);
 
@@ -32,7 +39,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     productsQuery = productsQuery.ilike("name", `%${query}%`);
   }
 
-  const { data: products } = await productsQuery.order("name");
+  const { data: products, count } = await productsQuery
+    .order("name")
+    .range(from, to);
 
   return (
     <>
@@ -60,6 +69,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           />
         </form>
         <ProductsTable products={products ?? []} />
+        <PaginationControls
+          basePath="/produtos"
+          page={page}
+          pageSize={DEFAULT_PAGE_SIZE}
+          totalCount={count ?? 0}
+          params={{ q: query || undefined }}
+        />
       </div>
     </>
   );
