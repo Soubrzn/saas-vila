@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SaaS Vila
 
-## Getting Started
+Sistema SaaS para pequenos comércios controlarem vendas, estoque, clientes e fiado com Next.js, Supabase e Vercel.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 com App Router
+- React 19
+- Supabase Auth, Database, RLS e RPCs
+- Tailwind CSS 4
+- Vercel para deploy
+
+## Configuração local
+
+1. Instale as dependências:
+
+```bash
+npm ci
+```
+
+2. Crie o arquivo `.env.local` a partir de `.env.example`:
+
+```bash
+cp .env.example .env.local
+```
+
+3. Preencha as variáveis do Supabase:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sua-chave-publicavel
+```
+
+Se o projeto Supabase ainda usa chave anon, use `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+4. Rode o app:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Banco de dados
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+As migrations ficam em `db/migrations` e criam:
 
-## Learn More
+- lojas e membros
+- produtos e estoque
+- clientes
+- vendas e itens
+- fiados e pagamentos
+- funções RPC para venda, pagamento e movimentação de estoque
+- políticas RLS para isolar dados por loja
 
-To learn more about Next.js, take a look at the following resources:
+Aplique as migrations no Supabase SQL Editor ou via Supabase CLI, mantendo a ordem numérica dos arquivos.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy na Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Configure no projeto da Vercel as mesmas variáveis usadas localmente:
 
-## Deploy on Vercel
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Depois faça o deploy normalmente pelo GitHub. O build valida TypeScript e renderiza as rotas autenticadas dinamicamente, porque elas dependem da sessão Supabase.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scripts
+
+```bash
+npm run dev
+npm run lint
+npm run build
+```
+
+## Observações de segurança
+
+- Não use service role key no frontend.
+- Mantenha RLS ativo nas tabelas públicas.
+- Faça alterações de estoque e vendas pelas RPCs versionadas.
+- Não commite `.env.local` nem chaves reais.
