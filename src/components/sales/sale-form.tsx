@@ -76,6 +76,8 @@ const shortcuts = [
   { key: "Esc", label: "Sair" },
 ];
 
+const PRODUCT_RESULT_LIMIT = 36;
+
 function numberValue(value: string | number) {
   return typeof value === "number" ? value : Number(value);
 }
@@ -117,6 +119,13 @@ export function SaleForm({
     return new Map(products.map((product) => [product.id, product]));
   }, [products]);
 
+  const searchableProducts = useMemo(() => {
+    return products.map((product) => ({
+      product,
+      normalizedName: normalizeText(product.name),
+    }));
+  }, [products]);
+
   const filteredProducts = useMemo(() => {
     const normalizedQuery = normalizeText(query);
 
@@ -124,44 +133,63 @@ export function SaleForm({
       return products;
     }
 
-    return products.filter((product) =>
-      normalizeText(product.name).includes(normalizedQuery),
-    );
-  }, [products, query]);
+    return searchableProducts
+      .filter(({ normalizedName }) => normalizedName.includes(normalizedQuery))
+      .map(({ product }) => product);
+  }, [products, query, searchableProducts]);
+
+  const visibleProducts = useMemo(() => {
+    return filteredProducts.slice(0, PRODUCT_RESULT_LIMIT);
+  }, [filteredProducts]);
+
+  const hiddenProductCount = Math.max(
+    filteredProducts.length - visibleProducts.length,
+    0,
+  );
 
   const selectedProduct =
     (selectedProductId ? productsById.get(selectedProductId) : null) ??
     filteredProducts[0] ??
     null;
 
-  const cartRows = cart
-    .map((item) => {
-      const product = productsById.get(item.productId);
+  const cartRows = useMemo(() => {
+    return cart
+      .map((item) => {
+        const product = productsById.get(item.productId);
 
-      if (!product) {
-        return null;
-      }
+        if (!product) {
+          return null;
+        }
 
-      const unitPrice = numberValue(product.sale_price);
+        const unitPrice = numberValue(product.sale_price);
 
-      return {
-        ...item,
-        product,
-        unitPrice,
-        total: unitPrice * item.quantity,
-      };
-    })
-    .filter((item): item is CartRow => item !== null);
+        return {
+          ...item,
+          product,
+          unitPrice,
+          total: unitPrice * item.quantity,
+        };
+      })
+      .filter((item): item is CartRow => item !== null);
+  }, [cart, productsById]);
 
-  const subtotal = cartRows.reduce((sum, item) => sum + item.total, 0);
+  const cartQuantityByProductId = useMemo(() => {
+    return new Map(cart.map((item) => [item.productId, item.quantity]));
+  }, [cart]);
+
+  const subtotal = useMemo(() => {
+    return cartRows.reduce((sum, item) => sum + item.total, 0);
+  }, [cartRows]);
   const discountNumber = Number(discount.replace(",", ".")) || 0;
   const total = Math.max(subtotal - discountNumber, 0);
-  const itemsPayload = JSON.stringify(
-    cartRows.map((item) => ({
-      product_id: item.product.id,
-      quantity: item.quantity,
-    })),
-  );
+  const itemsPayload = useMemo(() => {
+    return JSON.stringify(
+      cartRows.map((item) => ({
+        product_id: item.product.id,
+        quantity: item.quantity,
+      })),
+    );
+  }, [cartRows]);
 
   const currentPayment = paymentOptions.find(
     (option) => option.value === paymentType,
@@ -510,9 +538,10 @@ export function SaleForm({
             >
               <StatusMessage error={error} />
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                {filteredProducts.map((product) => {
-                  const item = cart.find((row) => row.productId === product.id);
-                  const available = product.current_stock - (item?.quantity ?? 0);
+                {visibleProducts.map((product) => {
+                  const available =
+                    product.current_stock -
+                    (cartQuantityByProductId.get(product.id) ?? 0);
                   const isSelected = selectedProductId === product.id;
 
                   return (
@@ -557,6 +586,13 @@ export function SaleForm({
                   );
                 })}
               </div>
+              {hiddenProductCount > 0 ? (
+                <p className="text-xs text-muted-foreground">
+                  Mostrando {visibleProducts.length} de{" "}
+                  {filteredProducts.length}. Use a busca para encontrar mais
+                  rapido.
+                </p>
+              ) : null}
             </div>
           </div>
         </section>

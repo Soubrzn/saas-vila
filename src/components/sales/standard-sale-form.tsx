@@ -110,35 +110,58 @@ export function StandardSaleForm({
   const selectedProduct = productsById.get(selectedProductId) ?? null;
   const isQuote = mode === "quote";
 
-  const cartRows = cart
-    .map((item) => {
-      const product = productsById.get(item.productId);
+  const productOptions = useMemo(() => {
+    return products.map((product) => (
+      <option key={product.id} value={product.id}>
+        {product.name} - {formatCurrency(product.sale_price)} - saldo{" "}
+        {product.current_stock}
+      </option>
+    ));
+  }, [products]);
 
-      if (!product) {
-        return null;
-      }
+  const customerOptions = useMemo(() => {
+    return customers.map((customer) => (
+      <option key={customer.id} value={customer.id}>
+        {customer.name}
+      </option>
+    ));
+  }, [customers]);
 
-      const unitPrice = numberValue(product.sale_price);
+  const cartRows = useMemo(() => {
+    return cart
+      .map((item) => {
+        const product = productsById.get(item.productId);
 
-      return {
-        ...item,
-        product,
-        unitPrice,
-        total: unitPrice * item.quantity,
-      };
-    })
-    .filter((item): item is CartRow => item !== null);
+        if (!product) {
+          return null;
+        }
 
-  const subtotal = cartRows.reduce((sum, item) => sum + item.total, 0);
+        const unitPrice = numberValue(product.sale_price);
+
+        return {
+          ...item,
+          product,
+          unitPrice,
+          total: unitPrice * item.quantity,
+        };
+      })
+      .filter((item): item is CartRow => item !== null);
+  }, [cart, productsById]);
+
+  const subtotal = useMemo(() => {
+    return cartRows.reduce((sum, item) => sum + item.total, 0);
+  }, [cartRows]);
   const discountNumber = Number(discount.replace(",", ".")) || 0;
   const total = Math.max(subtotal - discountNumber, 0);
-  const itemsPayload = JSON.stringify(
-    cartRows.map((item) => ({
-      product_id: item.product.id,
-      quantity: item.quantity,
-      unit_price: item.unitPrice,
-    })),
-  );
+  const itemsPayload = useMemo(() => {
+    return JSON.stringify(
+      cartRows.map((item) => ({
+        product_id: item.product.id,
+        quantity: item.quantity,
+        unit_price: item.unitPrice,
+      })),
+    );
+  }, [cartRows]);
   const canSubmit =
     cartRows.length > 0 && (paymentType !== "credit" || customerId.length > 0);
 
@@ -265,12 +288,7 @@ export function StandardSaleForm({
                   onChange={(event) => setSelectedProductId(event.target.value)}
                   className="h-10 w-full rounded-lg border border-input bg-white/80 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
-                  {products.map((product) => (
-                    <option key={product.id} value={product.id}>
-                      {product.name} - {formatCurrency(product.sale_price)} -
-                      saldo {product.current_stock}
-                    </option>
-                  ))}
+                  {productOptions}
                 </select>
               </div>
               <div className="space-y-2">
@@ -424,11 +442,7 @@ export function StandardSaleForm({
                 className="h-10 w-full rounded-lg border border-input bg-white/80 px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               >
                 <option value="">Sem cliente</option>
-                {customers.map((customer) => (
-                  <option key={customer.id} value={customer.id}>
-                    {customer.name}
-                  </option>
-                ))}
+                {customerOptions}
               </select>
             </div>
           ) : null}

@@ -1,37 +1,13 @@
-"use client";
-
-import {
-  Boxes,
-  ChartNoAxesCombined,
-  ClipboardList,
-  Home,
-  LineChart,
-  Package,
-  ReceiptText,
-  Users,
-} from "lucide-react";
+import { ChartNoAxesCombined } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-import { cn } from "@/lib/utils";
-
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: Home },
-  { href: "/vendas", label: "Vendas", icon: ReceiptText },
-  { href: "/produtos", label: "Produtos", icon: Package },
-  { href: "/estoque", label: "Estoque", icon: Boxes },
-  { href: "/clientes", label: "Clientes", icon: Users },
-  { href: "/fiados", label: "Fiados", icon: ClipboardList },
-  { href: "/relatorios", label: "Relatorios", icon: LineChart },
-];
+import { SidebarNav } from "@/components/layout/sidebar-nav";
 
 type AppSidebarProps = {
   shopName: string;
 };
 
 export function AppSidebar({ shopName }: AppSidebarProps) {
-  const pathname = usePathname();
-
   return (
     <aside className="hidden w-72 shrink-0 border-r border-white/10 bg-sidebar text-sidebar-foreground md:flex md:flex-col">
       <div className="relative overflow-hidden border-b border-white/10 px-5 py-5">
@@ -46,35 +22,7 @@ export function AppSidebar({ shopName }: AppSidebarProps) {
           </div>
         </Link>
       </div>
-      <nav className="flex flex-1 flex-col gap-1 px-3 py-4">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const active =
-            pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "group flex h-11 items-center gap-3 rounded-2xl px-3 text-sm font-medium text-white/72 transition-all hover:bg-white/8 hover:text-white",
-                active &&
-                  "bg-white/12 text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]",
-              )}
-            >
-              <span
-                className={cn(
-                  "flex size-8 items-center justify-center rounded-xl bg-white/7 text-white/70 transition-colors group-hover:text-emerald-200",
-                  active && "bg-emerald-400 text-slate-950",
-                )}
-              >
-                <Icon className="size-4" />
-              </span>
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
+      <SidebarNav />
     </aside>
   );
 }

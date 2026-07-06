@@ -1,18 +1,12 @@
 "use client";
 
 import {
-  Boxes,
-  ClipboardList,
-  Home,
-  LineChart,
   Menu,
-  Package,
-  ReceiptText,
-  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { navItems } from "@/components/layout/nav-items";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -22,16 +16,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: Home },
-  { href: "/vendas", label: "Vendas", icon: ReceiptText },
-  { href: "/produtos", label: "Produtos", icon: Package },
-  { href: "/estoque", label: "Estoque", icon: Boxes },
-  { href: "/clientes", label: "Clientes", icon: Users },
-  { href: "/fiados", label: "Fiados", icon: ClipboardList },
-  { href: "/relatorios", label: "Relatorios", icon: LineChart },
-];
 
 export function MobileNav() {
   const pathname = usePathname();

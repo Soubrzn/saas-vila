@@ -70,11 +70,18 @@ export default async function DashboardPage() {
   ]);
 
   const weeklySales = weeklySalesResponse.data ?? [];
-  const sales = weeklySales.filter((sale) => {
-    const soldAt = new Date(sale.sold_at);
+  const salesByDay = new Map<string, { total: number; count: number }>();
 
-    return soldAt >= today && soldAt < tomorrow;
+  weeklySales.forEach((sale) => {
+    const key = dateKey(new Date(sale.sold_at));
+    const current = salesByDay.get(key) ?? { total: 0, count: 0 };
+
+    salesByDay.set(key, {
+      total: current.total + Number(sale.total ?? 0),
+      count: current.count + 1,
+    });
   });
+
   const products = productsResponse.data ?? [];
   const lowStock = products
     .filter((product) => product.current_stock <= product.minimum_stock)
@@ -95,25 +102,19 @@ export default async function DashboardPage() {
     const date = new Date(chartStart);
     date.setDate(chartStart.getDate() + index);
     const key = dateKey(date);
-    const daySales = weeklySales.filter(
-      (sale) => dateKey(new Date(sale.sold_at)) === key,
-    );
+    const daySales = salesByDay.get(key) ?? { total: 0, count: 0 };
 
     return {
       key,
       label: chartLabel(date),
-      total: daySales.reduce(
-        (sum, sale) => sum + Number(sale.total ?? 0),
-        0,
-      ),
-      count: daySales.length,
+      total: daySales.total,
+      count: daySales.count,
     };
   });
 
-  const dailyTotal = sales.reduce(
-    (sum, sale) => sum + Number(sale.total ?? 0),
-    0,
-  );
+  const todaySales = salesByDay.get(dateKey(today)) ?? { total: 0, count: 0 };
+  const dailyTotal = todaySales.total;
+  const dailyCount = todaySales.count;
   const estimatedProfit = dailyTotal * 0.28;
   const openDebtTotal = debts.reduce(
     (sum, debt) => sum + Number(debt.amount) - Number(debt.paid_amount),
@@ -143,7 +144,7 @@ export default async function DashboardPage() {
                 {formatCurrency(dailyTotal)}
               </p>
               <p className="mt-2 text-sm text-white/60">
-                {sales.length} venda(s)
+                {dailyCount} venda(s)
               </p>
             </div>
           </div>
@@ -153,7 +154,7 @@ export default async function DashboardPage() {
           <MetricCard
             title="Vendas do dia"
             value={formatCurrency(dailyTotal)}
-            helper={`${sales.length} venda(s)`}
+            helper={`${dailyCount} venda(s)`}
             icon={Banknote}
             tone="emerald"
           />
@@ -183,7 +184,7 @@ export default async function DashboardPage() {
           <SalesPulseChart
             points={salesPulse}
             todayTotal={dailyTotal}
-            todayCount={sales.length}
+            todayCount={dailyCount}
           />
           <RecentSalesCard sales={recentSales} />
         </div>
